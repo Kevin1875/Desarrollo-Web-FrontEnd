@@ -1,5 +1,5 @@
 <script setup>
-const login = true;
+const login = false;
 
 const name = "Cupidatat sit";
 
@@ -12,8 +12,8 @@ const name = "Cupidatat sit";
         <img
           src="/src/assets/LogoUN.svg"
           alt="Logo"
-          width="30"
-          height="24"
+          width="60"
+          height="30"
           class="d-inline-block align-text-top"
         />
       </a>
@@ -168,6 +168,10 @@ const name = "Cupidatat sit";
   font-weight: 900;
   font-size: 16px;
   color: #FFFFFF;
+}
+
+.navbar-toggler {
+  background-color: #FFFFFF; /* Cambiar aquí el color deseado */
 }
 
 </style>
