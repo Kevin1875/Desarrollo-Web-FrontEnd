@@ -1,177 +1,69 @@
-<script setup>
-const login = false;
+<script>
+import { reactive } from "vue";
 
-const name = "Cupidatat sit";
+const usuario = reactive({ name: "Cupidatat sit", status: false });
 
+function login() {
+  user.status = !user.status;
+  console.log(user.status);
+}
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img
-          src="/src/assets/LogoUN.svg"
-          alt="Logo"
-          width="60"
-          height="30"
-          class="d-inline-block align-text-top"
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navBar">
+    <a class="navbar-brand" href="#">
+      <img
+        src="/src/assets/LogoUN.svg"
+        alt="logo"
+        width="70"
+        height="35"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+        </li>
+        <li v-show="true" class="nav-item">
+          <a class="nav-link" href="#">Documentos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Ayuda</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input
+          @keyup.enter=""
+          class="form-control me-2"
+          type="search"
+          placeholder="Buscar en la base de datos del Régimen Legal..."
+          aria-label="Buscar en la base de datos del Régimen Legal..."
         />
-      </a>
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form>
       <button
-        class="navbar-toggler"
+        v-show="true"
         type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+        class="btn btn-success"
+        @click="login"
       >
-        <span class="navbar-toggler-icon"></span>
+        Iniciar sección
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Inicio</a>
-          </li>
-          <li v-show="login" class="nav-item">
-            <a class="nav-link" href="#">Documentos</a>
-            <!-- Menu para la gestion de documentos subidos, tiene que iniciar seccion y tener el permiso -->
-          </li>
-          <li v-show="login" class="nav-item">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              >Entidades</a
-            >
-            <!-- Lista de entidades academicas -->
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="http://secretaria.unal.edu.co/" target="_blank"
-                  >Secretaría general</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="http://csu.unal.edu.co/" target="_blank"
-                  >Consejo superior universitario</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="http://consejoacademico.unal.edu.co/" target="_blank"
-                  >Consejo académico</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item" href="http://www.votacion.unal.edu.co/" target="_blank"
-                  >Elecciones y consultas en la universidad nacional de
-                  Colombia</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item"
-                  href="http://gestionypatrimoniodocumental.unal.edu.co/" target="_blank"
-                  >Oficina nacional del gestión y patrimonio documental</a
-                >
-              </li>
-              <li>
-                <a class="dropdown-item dropdown-toggle" href="#"
-                  >Gestion administrativa y financiera</a
-                >
-                <ul class="submenu dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="http://www.gerencia.unal.edu.co/" target="_blank"
-                      >Procedimiento instructivos y formatos</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">Normas de contratación</a>
-                  </li>
-                  <!-- abre una ventana de los documentos relacionados -->
-                </ul>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#"
-                  >Sistema de matrículas y otros derechos de pago</a
-                >
-              </li>
-              <!-- abre una ventana de los documentos relacionados -->
-              <li><a class="dropdown-item" href="#">Conceptos jurídicos</a></li>
-              <!-- abre una ventana de los documentos relacionados -->
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">Ayuda</a>
-          </li>
-        </ul>
-        <form class="d-flex ml-auto" role="search" id = "navBarSearch">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder=""
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
-        </form>
-        <button v-show="!login" id = "BotonLogin">Iniciar sección</button>
-        <div v-show="login" id="info-container">
-            <label id="info-name">{{ name }}</label>
-            <img src="/src/assets/Vector.svg" alt="Perfil" id="info-picture">
-        </div>
+      <div v-show="true" class="profile-options">
+        <label for="profile" style="color: #ffffff">sdafsadascl</label>
+        <img src="/src/assets/Vector.svg" alt="profile" id="profile" />
       </div>
     </div>
   </nav>
 </template>
-#navbarNav {
-
-}
-<style scoped>
-
-.nav-link {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 800;
-    font-size: 16px;
-
-    color: #FFFFFF;
-}
-
-#BotonLogin {
-    background: #FFFFFF;
-    border-radius: 100px;
-}
-
-#info-container {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 10%;
-}
-
-
-#info-picture {
-
-  height: 20px;
-  width: 20px;
-}
-
-#info-name {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 900;
-  font-size: 16px;
-  color: #FFFFFF;
-}
-
-.navbar-toggler {
-  background-color: #FFFFFF; /* Cambiar aquí el color deseado */
-}
-
-</style>

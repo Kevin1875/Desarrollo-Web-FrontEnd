@@ -1,6 +1,6 @@
 <script setup>
-import navBar from './components/navBar.vue';
-import mainMenu from './components/mainMenu.vue';
+import navBar from './components/navBar.vue'
+import mainMenu from './components/mainMenu.vue'
 </script>
 
 <template>
@@ -8,6 +8,4 @@ import mainMenu from './components/mainMenu.vue';
   <mainMenu></mainMenu>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
