@@ -1,12 +1,21 @@
-<script>
-import { reactive } from "vue";
+<script setup>
+import { defineProps } from 'vue';
 
-const usuario = reactive({ name: "Cupidatat sit", status: false });
+const user = defineProps({
+  name: {
+    type: String,
+    default: ""
+  },
+  status: {
+    type: Boolean,
+    // default: false
+    // validator: 
+  }
+});
 
-function login() {
-  user.status = !user.status;
-  console.log(user.status);
-}
+const emit = defineEmits('Update');
+
+const login = () => {emit('Update', !user.status)}
 </script>
 
 <template>
@@ -33,13 +42,13 @@ function login() {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          <label class="nav-link active" aria-current="page" >Inicio</label>
         </li>
-        <li v-show="true" class="nav-item">
-          <a class="nav-link" href="#">Documentos</a>
-        </li>
+        <li v-show="user.status" class="nav-item">
+          <label class="nav-link" >Documentos</label>
+        </li> 
         <li class="nav-item">
-          <a class="nav-link" href="#">Ayuda</a>
+          <label class="nav-link" >Ayuda</label>
         </li>
       </ul>
       <form class="d-flex" role="search">
@@ -53,15 +62,15 @@ function login() {
         <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
       <button
-        v-show="true"
+        v-show="!user.status"
         type="button"
         class="btn btn-success"
         @click="login"
       >
         Iniciar sección
       </button>
-      <div v-show="true" class="profile-options">
-        <label for="profile" style="color: #ffffff">sdafsadascl</label>
+      <div v-show="user.status" class="profile-options" @click="login">
+        <label for="profile" style="color: #ffffff">{{ user.name }}</label>
         <img src="/src/assets/Vector.svg" alt="profile" id="profile" />
       </div>
     </div>

@@ -1,4 +1,8 @@
-<script></script>
+<script setup>
+import { defineProps } from 'vue';
+
+defineProps(['status'])
+</script>
 
 <template>
   <h1 style="color: #ffffff;">
@@ -44,7 +48,7 @@
         </div>
       </div>
     </div>
-    <div id="recomendaciones">
+    <div id="recomendaciones" v-show="status">
       <h3 style="color: #FFFFFF;">Recomendaciones</h3>
       <div
         id="Recomendaciones"
