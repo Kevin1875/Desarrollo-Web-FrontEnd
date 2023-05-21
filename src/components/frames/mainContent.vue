@@ -1,0 +1,30 @@
+<script setup>
+//Home
+import unloged from './home/unloged.vue';
+
+//Search
+import simpleSearch from './search/simpleSearch.vue';
+import advancedSearch from './search/advancedSearch.vue';
+import simpleSearch2 from './search/simpleSearch2.vue';
+import asform from './utils/asform.vue'
+
+</script>
+
+<template>
+    <div class="main">
+        <advancedSearch/>
+    </div>
+</template>
+
+<style scoped>
+.main{
+    /*background-color: red;*/
+    width: 90%;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    min-height: 100vh
+}
+
+</style>
