@@ -126,6 +126,8 @@ li a:hover{
     text-decoration: none;
     color: inherit;
     transition: all 0.5s ease;
+    cursor: pointer;
+
 }
 .bt-login a:hover{
     padding: 0px 6px;

@@ -1,6 +1,6 @@
 <script setup>
 //Home
-import unloged from './home/unloged.vue';
+import loged from './home/loged.vue';
 
 //Search
 import simpleSearch from './search/simpleSearch.vue';
@@ -8,11 +8,13 @@ import advancedSearch from './search/advancedSearch.vue';
 import simpleSearch2 from './search/simpleSearch2.vue';
 import asform from './utils/asform.vue'
 
+import caro from './utils/carousel.vue'
+
 </script>
 
 <template>
     <div class="main">
-        <advancedSearch/>
+        <loged/>
     </div>
 </template>
 
