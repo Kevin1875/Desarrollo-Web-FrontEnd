@@ -8,8 +8,6 @@ import advancedSearch from '../search/advancedSearch.vue';
 import simpleSearch2 from '../search/simpleSearch2.vue';
 import asform from '../utils/asform.vue'
 
-import caro from '../utils/carousel.vue'
-
 import adminpanel from '../admin/adminpanel.vue'
 import publicationManager from '../admin/publicationManager.vue';
 

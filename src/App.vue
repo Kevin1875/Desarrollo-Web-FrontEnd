@@ -6,14 +6,14 @@ import mainContent from './components/frames/base/mainContent.vue';
 
 <template>
     <navbar/>
-    <div class="mainFrameClass">
+    <div class="mainContentClass">
         <mainContent />
     </div>
     <pFooter/>
 </template>
 
 <style scoped>
-.mainFrameClass{
+.mainContentClass{
     display: flex;
     justify-content: center;
 }
