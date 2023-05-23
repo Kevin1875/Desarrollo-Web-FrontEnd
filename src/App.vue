@@ -10,6 +10,8 @@ const updateUser = value => {user.status=value}
 <template>
   <navBar :name="user.name" :status="user.status" @Update="updateUser"></navBar>
   <mainMenu :status="user.status"></mainMenu>
+  <!-- <simple></simple>
+  <advance></advance> -->
 </template>
 
 <style scoped></style>

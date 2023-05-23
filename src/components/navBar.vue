@@ -47,6 +47,9 @@ const login = () => {emit('Update', !user.status)}
         <li v-show="user.status" class="nav-item">
           <label class="nav-link" >Documentos</label>
         </li> 
+        <li v-show="false" class="nav-item">
+          <label class="nav-link active" aria-current="page" >Panel de control</label>
+        </li>
         <li class="nav-item">
           <label class="nav-link" >Ayuda</label>
         </li>
