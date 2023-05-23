@@ -8,5 +8,4 @@ import mainFrame from './components/frames/base/mainFrame.vue'
 </template>
 
 <style>
-
 </style>
