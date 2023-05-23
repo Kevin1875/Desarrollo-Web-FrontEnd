@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.47"
+    "bootstrap-vue": "^2.23.1",
+    "vue": "^3.2.47",
+    "vue-future-slider": "^1.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

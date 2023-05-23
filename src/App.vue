@@ -1,15 +1,12 @@
 <script setup>
-import { reactive } from "vue";
-
-const user = reactive({ name: "Cupidatat sit", status: false });
-
-const updateUser = value => {user.status=value}
+import mainFrame from './components/frames/base/mainFrame.vue'
 
 </script>
 
 <template>
-  <navBar :name="user.name" :status="user.status" @Update="updateUser"></navBar>
-  <mainMenu :status="user.status"></mainMenu>
+  <mainFrame/>
 </template>
 
-<style scoped></style>
+<style>
+
+</style>

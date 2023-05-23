@@ -1,0 +1,36 @@
+<script setup>
+//Home
+import loged from './home/loged.vue';
+
+//Search
+import simpleSearch from './search/simpleSearch.vue';
+import advancedSearch from './search/advancedSearch.vue';
+import simpleSearch2 from './search/simpleSearch2.vue';
+import asform from './utils/asform.vue'
+
+import caro from './utils/carousel.vue'
+
+import adminpanel from '../frames/admin/adminpanel.vue'
+import publicationManager from './admin/publicationManager.vue';
+
+
+</script>
+
+<template>
+    <div class="main">
+        <loged/>
+    </div>
+</template>
+
+<style scoped>
+.main{
+    /*background-color: red;*/
+    width: 90%;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    min-height: 100vh
+}
+
+</style>

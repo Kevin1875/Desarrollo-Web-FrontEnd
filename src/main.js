@@ -1,17 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import Nav from './components/navBar.vue'
-import mainMenu from './components/mainMenu.vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import './assets/main.css'
+import './assets/main2.css'
 
-
-const app = createApp(App)
-
-//agregamiento de componentes
-app.component('navBar', Nav);
-app.component('mainMenu', mainMenu);
-
-//lanzamiento de la app
-app.mount('#app')
-
+createApp(App).mount('#app')
