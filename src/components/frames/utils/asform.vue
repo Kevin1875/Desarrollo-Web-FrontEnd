@@ -1,5 +1,32 @@
 <script setup>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
+const xd = "";
+const cuerposColegiados = [
+  {
+    value: 1,
+    label: "Comisión Delegataria del Consejo Superior Universitario",
+  },
+  { value: 1, label: "Comisión Nacional de Carrera Administrativa" },
+  { value: 1, label: "Comité Académico Administrativo Sede Bogotá" },
+  { value: 1, label: "Comité Académico Administrativo Sede Manizales" },
+  { value: 1, label: "Comité Académico Administrativo Sede Medellín" },
+];
+
+const tipoDocumentos = [
+  { value: 1, label: "Acuerdo" },
+  { value: 1, label: "Circular" },
+  { value: 1, label: "Circular Conjunta" },
+  { value: 1, label: "Concepto" },
+  { value: 1, label: "Convención Colectiva" },
+  { value: 1, label: "Decreto" },
+  { value: 1, label: "Documento de Relatoría" },
+  { value: 1, label: "Instructivo" },
+  { value: 1, label: "Ley" },
+  { value: 1, label: "Linea Jurisprudencial" },
+  { value: 1, label: "Nota" },
+  { value: 1, label: "Resolución" },
+  { value: 1, label: "Sentencia" },
+];
 </script>
 
 <template>
@@ -25,13 +52,12 @@ import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
             />
           </div>
           <div class="formComponent">
-            <label for="apellido">Tipo</label>
-            <input
-              type="text"
-              id="apellido"
-              name="apellido"
-              placeholder="Ingrese su apellido"
-            />
+            <label for="pais">Cuerpo Colegiado:</label>
+            <select class="sle" id="pais" name="pais" v-model="xd">
+              <option v-for="option in tipoDocumentos " :value="option.value">
+                {{ option.label }}
+              </option>
+            </select>
           </div>
 
           <div class="formComponent">
@@ -45,13 +71,10 @@ import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
           </div>
           <div class="formComponent">
             <label for="pais">Cuerpo Colegiado:</label>
-            <select class="sle" id="pais" name="pais">
-              <option value="Argentina">Argentina</option>
-              <option value="Brasil">Brasil</option>
-              <option value="Chile">Chile</option>
-              <option value="Colombia">Colombia</option>
-              <option value="México">México</option>
-              <option value="Perú">Perú</option>
+            <select class="sle" id="pais" name="pais" v-model="xd">
+              <option v-for="option in cuerposColegiados" :value="option.value">
+                {{ option.label }}
+              </option>
             </select>
           </div>
 

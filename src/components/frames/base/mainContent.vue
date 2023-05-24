@@ -9,14 +9,16 @@ import simpleSearch2 from '../search/simpleSearch2.vue';
 import asform from '../utils/asform.vue'
 
 import adminpanel from '../admin/adminpanel.vue'
-import publicationManager from '../admin/publicationManager.vue';
+import creation from '../admin/documents/create.vue'
+
+import statuspTable from '../../tables/statuspTable.vue';
 
 
 </script>
 
 <template>
     <div class="main">
-        <loged/>
+        <adminpanel/>
     </div>
 </template>
 
