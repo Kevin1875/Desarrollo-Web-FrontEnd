@@ -59,6 +59,12 @@ import recomendationSlider from "../utils/recomendSlider.vue";
 }
 .tituloz {
   width: 100%;
+  font-weight: bold;
+}
+.tituloz h1 {
+  width: 100%;
+  font-weight: bold;
+  color: aliceblue;
 }
 
 .aaaaa {

@@ -26,6 +26,7 @@
         </div>
       </div>
     </div>
+    <documentPanel/>
   </div>
 </template>
 <style scoped>
@@ -82,4 +83,10 @@
   transition: all 0.5s ease-in-out;
 }
 </style>
-<script setup></script>
+<script setup>
+import documentPanel from  './documents/view.vue'
+import bodyPanel from  './bodies/view.vue'
+import userPanel from  './users/view.vue'
+
+
+</script>
