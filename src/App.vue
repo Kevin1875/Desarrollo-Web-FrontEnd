@@ -55,7 +55,7 @@ const currentView = computed(() => {
 </script>
 
 <template>
-    <navbar />
+    <navbar :name="user.name" :status="user.status" @Update="updateUser"/>
     <div class="mainContentClass">
         <component :is="currentView" />
     </div>

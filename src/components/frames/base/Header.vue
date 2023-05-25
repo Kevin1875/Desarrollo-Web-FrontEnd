@@ -53,7 +53,12 @@ window.addEventListener('scroll', function (){
                 <li class="li"><a href="#/Ayuda">Ayuda</a> </li>
             </ul>
         </nav>
-        <div class="login"><div class="bt-login"><a @:click="login">{{ user.name }}</a> </div></div>
+        <div class="login">
+            <div class="bt-login" @:click="login">
+                <label v-if="!user.status">login</label>
+                <label v-else >{{ user.name }}</label> 
+                </div>
+            </div>
     </header>
 </template>
 
