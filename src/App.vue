@@ -66,9 +66,8 @@ const currentView = computed(() => {
 .mainContentClass{
     display: flex;
     justify-content: center;
-    width: 90%;
-    padding-left: 30px;
-    padding-right: 30px;
+    width: 100%;
+    padding: 0 50px;
     margin-top: 80px;
     margin-bottom: 80px;
     min-height: 100vh

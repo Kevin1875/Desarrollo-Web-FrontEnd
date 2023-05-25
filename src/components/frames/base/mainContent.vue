@@ -18,7 +18,7 @@ import statuspTable from '../../tables/statuspTable.vue';
 
 <template>
     <div class="main">
-        <loged/>
+        <adminpanel/>
     </div>
 </template>
 
@@ -30,7 +30,10 @@ import statuspTable from '../../tables/statuspTable.vue';
     padding-right: 30px;
     margin-top: 80px;
     margin-bottom: 80px;
-    min-height: 100vh
+    min-height: 100vh;
+    display:flex;
+    justify-content: center;
+
 }
 
 </style>
