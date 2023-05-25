@@ -19,11 +19,11 @@ import creation from './components/frames/admin/documents/create.vue'
 import statuspTable from './components/tables/statuspTable.vue';
 
 import { ref, computed } from 'vue'
+import { reactive } from "vue";
 
-const user = {
-    nombre: 'name',
-    status: false
-}
+const user = reactive({ name: "Cupidatat sit", status: false });
+
+const updateUser = value => {user.status=value}
 
 const Inicio = unloged
 
@@ -55,7 +55,7 @@ const currentView = computed(() => {
 </script>
 
 <template>
-    <navbar/>
+    <navbar />
     <div class="mainContentClass">
         <component :is="currentView" />
     </div>

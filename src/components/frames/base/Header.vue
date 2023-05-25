@@ -1,15 +1,26 @@
 <script setup>
 import {ref} from 'vue' 
-let varLogin = ref('Login');
-let isScroll = ref(true);
+import { defineProps } from 'vue';
 
-const clickcito  = () => {
-    if (varLogin.value == 'Login'){
-        varLogin.value = 'Kevin';
-    }else{
-        varLogin.value = 'Login';
-    }
-};
+const user = defineProps({
+  name: {
+    type: String,
+    default: ""
+  },
+  status: {
+    type: Boolean,
+    // default: false
+    // validator: 
+  }
+});
+
+const emit = defineEmits('Update');
+
+const login = () => {emit('Update', !user.status)}
+
+
+
+let isScroll = ref(true);
 
 
 function header(){
@@ -38,11 +49,11 @@ window.addEventListener('scroll', function (){
         <nav class="nav">
             <ul class="ul">
                 <li class="li"><a href="#/">Inicio</a> </li>
-                <li class="li"><a href="#/Favoritos">Mis Documentos</a> </li>
+                <li v-show="user.status" class="li"><a href="#/Favoritos">Mis Documentos</a> </li>
                 <li class="li"><a href="#/Ayuda">Ayuda</a> </li>
             </ul>
         </nav>
-        <div class="login"><div class="bt-login"><a @:click="clickcito">{{ varLogin }}</a> </div></div>
+        <div class="login"><div class="bt-login"><a @:click="login">{{ user.name }}</a> </div></div>
     </header>
 </template>
 
