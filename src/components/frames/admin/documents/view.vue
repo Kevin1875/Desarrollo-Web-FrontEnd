@@ -1,10 +1,62 @@
 <script setup>
+import {ref} from 'vue' 
 import create from "./create.vue";
 import modify from "./modify.vue";
-import validte from "./validate.vue";
+import validate from "./validate.vue";
+import { computed } from '@vue/reactivity';
+
+
+
+let frameActive = ref(0);
+
+function cambio(){
+  console.log('pasaaa')
+    if (frameActive.value === 0){
+        return {'main-d': true, 'hide': false};
+    }else{
+        return {'main-d': false, 'hide': true};
+    }
+}
+
+function createS() {
+    if (frameActive.value === 1){
+        return {'': true, 'hide': false};
+    }else{
+        return {'': false, 'hide': true};
+    }
+}
+
+const classCounter = computed(() => {
+  if (!frameActive.value === 0){
+    console.log('EY')
+    return 'hide'
+  }
+})
+
+function showing(value){
+  if (!frameActive === value){
+    console.log('pasa')
+    return {'hide': true}
+  }
+}
+let showCreateD = () =>{
+  frameActive.value = 1;
+  console.log(frameActive.value)
+}
+let showModifyD = () =>{
+  frameActive.value = 2;
+  console.log(frameActive.value)
+
+}
+let showValidateD = () =>{
+  frameActive.value = 3;
+  console.log(frameActive.value)
+
+}
 </script>
 <template>
-  <div class="main-d">
+  <div >
+    <div :class="cambio()" class="prueba">
     <div class="top-cr">
       <div class="tittle-cr">
         <h6>PANEL ADMINISTRACIÓN</h6>
@@ -14,18 +66,35 @@ import validte from "./validate.vue";
         <div class="btn-atras"></div>
       </div>
     </div>
+  </div>
+
 
     <div class="container-d">
-      <div class="item-d">Publicar</div>
-      <div class="item-d">Modificar</div>
-      <div class="item-d">Validar</div>
+      <div class="item-d" @click="showCreateD" :class=showing(1)>Publicar</div>
+      <div class="item-d" @click="showModifyD" :class=showing(2)>Modificar</div>
+      <div class="item-d" @click="showValidateD" :class=showing(3)>Validar</div>
     </div>
   </div>
+
+  <create :class="createS()"/>
+  <modify class="hide"/>
+  <validate class="hide"/>
+
+
+
 </template>
 
 <style scoped>
+
+.prueba{
+  background-color: rebeccapurple;
+}
+.hide{
+  display: none;
+}
 .main-d {
   margin: 50px 0;
+  color: white;
 }
 
 .container-d {
@@ -33,6 +102,7 @@ import validte from "./validate.vue";
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  margin: 100px 0;
 }
 
 .item-d {
