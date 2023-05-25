@@ -37,9 +37,9 @@ window.addEventListener('scroll', function (){
         </div>
         <nav class="nav">
             <ul class="ul">
-                <li class="li"><a href="https://unal.edu.co/">Inicio</a> </li>
-                <li class="li"><a href="https://unal.edu.co/">Mis Documentos</a> </li>
-                <li class="li"><a href="https://unal.edu.co/">Ayuda</a> </li>
+                <li class="li"><a href="#/">Inicio</a> </li>
+                <li class="li"><a href="#/Favoritos">Mis Documentos</a> </li>
+                <li class="li"><a href="#/Ayuda">Ayuda</a> </li>
             </ul>
         </nav>
         <div class="login"><div class="bt-login"><a @:click="clickcito">{{ varLogin }}</a> </div></div>
@@ -135,11 +135,6 @@ li a:hover{
     color: black;
     border-radius: 15px;
 }
-
-
-
-
-
 
 .login{
     padding: 10px;
