@@ -8,7 +8,7 @@ import asform from '../utils/asform.vue'
 
 <template>
     <div class="main-as">
-        <asform/>
+        <asform @data/>
         <div class="container-table"> 
             <sTable/>
         </div>

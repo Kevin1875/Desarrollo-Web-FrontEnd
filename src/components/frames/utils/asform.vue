@@ -28,12 +28,16 @@ const tipoDocumentos = [
   { value: 1, label: "Sentencia" },
 ];
 
-let palabra = "";
-let cuerpocol = "";
-let tipo = "";
-let año = "";
+const emits = defineEmits('data');
 
-function test (){console.log(palabra)}
+const data = {
+  palabra: "",
+  tipo: "",
+  año: "",
+  cuerpoCol:""
+}
+
+function crud (){emit('data', data)}
 
 </script>
 
@@ -49,11 +53,11 @@ function test (){console.log(palabra)}
       </div>
 
       <div class="formSection">
-        <form @submit.prevent="test">
+        <form @submit.prevent="crud">
           <div class="formComponent">
             <label for="nombre">Palabra clave {{ palabra }}</label>
             <input
-              v-model="palabra"
+              v-model="data.palabra"
               type="text"
               id="nombre"
               name="nombre"
@@ -62,7 +66,7 @@ function test (){console.log(palabra)}
           </div>
           <div class="formComponent">
             <label for="tipoDocumento">Tipo de Documento:</label>
-            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="tipo">
+            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="data.tipo">
               <option v-for="option in tipoDocumentos " :value="option.value">
                 {{ option.label }}
               </option>
@@ -72,7 +76,7 @@ function test (){console.log(palabra)}
           <div class="formComponent">
             <label for="año">Año</label>
             <input
-              v-model="año"
+              v-model="data.año"
               type="number"
               id="año"
               name="año"
@@ -81,7 +85,7 @@ function test (){console.log(palabra)}
           </div>
           <div class="formComponent">
             <label for="cuerpoCol">Cuerpo Colegiado:</label>
-            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="cuerpocol">
+            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="data.cuerpoCol">
               <option v-for="option in cuerposColegiados" :value="option.value">
                 {{ option.label }}
               </option>
