@@ -1,10 +1,8 @@
 <script setup>
-import documentPanel from  './documents/view.vue'
-import bodyPanel from  './bodies/view.vue'
-import userPanel from  './users/view.vue'
-
+import documentPanel from "./documents/view.vue";
+import bodyPanel from "./bodies/view.vue";
+import userPanel from "./users/view.vue";
 </script>
-
 
 <template>
   <div>
@@ -13,11 +11,13 @@ import userPanel from  './users/view.vue'
     </div>
     <div class="content-ap">
       <div class="container-ap">
-        <div class="tittle-container-ap">GESTIÓN DE PUBLICACIONES</div>
-        <div class="text-container-ap">
-          Solicitar publicación, solicitar cambios en publicación y validación
-          de documentos
-        </div>
+        <a href="/adminpanel/publication">
+          <div class="tittle-container-ap">GESTIÓN DE PUBLICACIONES</div>
+          <div class="text-container-ap">
+            Solicitar publicación, solicitar cambios en publicación y validación
+            de documentos
+          </div>
+        </a>
       </div>
 
       <div class="container-ap">
@@ -34,7 +34,6 @@ import userPanel from  './users/view.vue'
         </div>
       </div>
     </div>
-    <documentPanel/>
   </div>
 </template>
 <style scoped>
@@ -63,7 +62,7 @@ import userPanel from  './users/view.vue'
 .tittle-ap {
   text-align: center;
   margin-bottom: 100px;
-  padding-top: 30px
+  padding-top: 30px;
 }
 
 .content-ap {
@@ -89,5 +88,15 @@ import userPanel from  './users/view.vue'
 .container-ap:hover .tittle-container-ap {
   background-color: rgba(0, 162, 255, 0.432);
   transition: all 0.5s ease-in-out;
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover{
+  text-decoration: none;
+  color: inherit;
 }
 </style>

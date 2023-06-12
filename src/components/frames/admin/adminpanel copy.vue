@@ -1,3 +1,11 @@
+<script setup>
+import documentPanel from  './documents/view.vue'
+import bodyPanel from  './bodies/view.vue'
+import userPanel from  './users/view.vue'
+
+</script>
+
+
 <template>
   <div>
     <div class="tittle-ap">
@@ -83,10 +91,3 @@
   transition: all 0.5s ease-in-out;
 }
 </style>
-<script setup>
-import documentPanel from  './documents/view.vue'
-import bodyPanel from  './bodies/view.vue'
-import userPanel from  './users/view.vue'
-
-
-</script>

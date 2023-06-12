@@ -3,6 +3,39 @@ import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
 import carf from "../utils/carousel.vue";
 import slider from "../utils/slider.vue";
 import recomendationSlider from "../utils/recomendSlider.vue";
+import { ref, onMounted } from "vue";
+
+let btnSimpleClass = ref("alm");
+let clickOnBottom = ref(false);
+
+const simpleClick = () => {
+  btnSimpleClass.value = "alm2";
+  clickOnBottom.value = true;
+};
+
+const isClickedOutside = ref(false);
+
+onMounted(() => {
+  const handleClickOutside = (event) => {
+    if (!clickOnBottom.value.$el.contains(event.target)) {
+      console.log("ijueputa");
+      isClickedOutside.value = true;
+    }
+  };
+
+  document.addEventListener("click", handleClickOutside);
+});
+
+
+//PASAR
+const prueba = ref('simplesearch?word=csu')
+const inputValue = ref('');
+const storedValue = ref('');
+
+const storeInputValue = () => {
+  storedValue.value = inputValue.value;
+  window.location.href = '/simplesearch?word='+storedValue.value;
+};
 </script>
 
 <template>
@@ -16,26 +49,39 @@ import recomendationSlider from "../utils/recomendSlider.vue";
     <div class="m1">
       <div class="messagge-main">
         <p class="Desc">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          Esta es una herramienta diseñada para recopilar, organizar y difundir
+          la legislación, jurisprudencia y conceptos relacionados con el régimen
+          legal de la Universidad Nacional de Colombia.
 
           <br />
           <br />
 
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          Nuestro objetivo principal es facilitar el acceso y la consulta de la
+          información legal relevante para los profesionales del derecho, como
+          abogados, jueces, investigadores y estudiantes. Proporciona una
+          plataforma centralizada donde se pueden encontrar leyes, decretos,
+          reglamentos, resoluciones judiciales, entre otros.
         </p>
 
-        <simpleSearchButton v-slot:name-button
-          >Busqueda Simple</simpleSearchButton
-        >
-        <simpleSearchButton v-slot:name-button style="margin-left: 50px"
-          >Busqueda Avanzada</simpleSearchButton
-        >
+        <div :class="btnSimpleClass">
+          <div v-if="clickOnBottom">
+            <div class="search_input">
+              <input type="text" placeholder="Ingresa tu busqueda" v-model="inputValue"/>
+              <a @click="storeInputValue"
+                ><span class="material-symbols-outlined"> search </span></a
+              >
+            </div>
+          </div>
+          <div v-else class="pre-charge">
+            <simpleSearchButton v-slot:name-button>
+              <a @click="simpleClick">Busqueda Simple</a>
+            </simpleSearchButton>
+          </div>
+
+          <simpleSearchButton v-slot:name-button
+            ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton
+          >
+        </div>
       </div>
       <div class="recomendaciones">
         <div class="titulo">RECOMENDACIONES</div>
@@ -45,17 +91,54 @@ import recomendationSlider from "../utils/recomendSlider.vue";
     <div class="aaaaa">
       <slider />
     </div>
-
   </div>
 </template>
 
 <style scoped>
+.search_input {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-.main-lg{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.search_input input {
+  width: 250px;
+  height: 40px;
+  border: 2px solid;
+  border-color: gray;
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  padding-left: 5px;
+  transition: all 0.7s ease;
+}
 
+.search_input input:focus {
+  outline: none;
+  border-color: #0500ff;
+}
+.search_input input:hover {
+  outline: none;
+  border-color: #0500ff;
+}
+.alm {
+  max-width: 340px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alm2 {
+  display: flex;
+  flex-direction: column;
+  height: 80px;
+  justify-content: space-between;
+}
+.main-lg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .tituloz {
   width: 100%;
@@ -81,7 +164,7 @@ import recomendationSlider from "../utils/recomendSlider.vue";
 .m1 {
   display: flex;
   flex-direction: row;
-  justify-content: space-around ;
+  justify-content: space-around;
   margin: 40px 0;
 }
 
@@ -111,7 +194,7 @@ import recomendationSlider from "../utils/recomendSlider.vue";
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size:larger;
+  font-size: larger;
   font-weight: 400;
 }
 
@@ -120,5 +203,29 @@ import recomendationSlider from "../utils/recomendSlider.vue";
   background-color: rgb(217, 217, 217, 0.15);
   border-radius: 2px 2px 2px 2px;
   padding: 20px;
+}
+
+.material-symbols-outlined {
+  display: flex;
+  height: 35px;
+  width: 35px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50px;
+  transition: all 0.7s ease;
+  margin: 0 5px;
+  font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 200, "opsz" 48;
+}
+
+.material-symbols-outlined:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.452);
+    color: rgb(9, 176, 218);
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: none;
 }
 </style>

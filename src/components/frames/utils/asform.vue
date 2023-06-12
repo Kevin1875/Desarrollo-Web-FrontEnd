@@ -43,7 +43,7 @@ const tipoDocumentos = [
       <div class="formSection">
         <form>
           <div class="formComponent">
-            <label for="nombre">Nombre</label>
+            <label for="nombre">Palabra clave</label>
             <input
               type="text"
               id="nombre"

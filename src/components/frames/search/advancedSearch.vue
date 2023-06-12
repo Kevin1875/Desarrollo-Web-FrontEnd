@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted } from "vue";
+
 import simpleSearchButton from '../../buttons/simpleSearchButton.vue';
 import sTable from '../../tables/sTable.vue'
 import asform from '../utils/asform.vue'

@@ -1,32 +1,44 @@
 <template>
-    <button class="xd">
-        <slot name="name-button"></slot>
-    </button>
+  <button class="xd">
+    <slot name="name-button"></slot>
+  </button>
 </template>
 
 <style>
-.xd{
-    background-color: white;
-    padding: 5px 10px;
-    color: #16264b;
-    font-weight: 600;
-    font-size: 16;
-    border-radius: 10px;
-    border: 0;
-    transition: all 0.3s ease;
-
+.xd {
+  background-color: white;
+  padding: 5px 10px;
+  color: #16264b;
+  font-weight: 600;
+  font-size: 16;
+  border-radius: 10px;
+  border: 0;
+  transition: all 0.3s ease;
+  width: fit-content;
 }
 
-.xd:hover{
-    background-color: rgb(223, 223, 223);
-    color: #16264b;
+.xd:hover {
+  background-color: rgb(223, 223, 223);
+  color: #16264b;
 }
 
-.xd:active{
-    background-color: #16264b;
-    color: white;
+.xd:active {
+  background-color: #16264b;
+  color: white;
 }
 
+.xd a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.xd a:hover {
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
 </style>
 
 <!--
@@ -44,7 +56,7 @@
     </template>
 -->
 
-    <!--
+<!--
     <template>
         <Card :product="product">
             <template v-slot:header>

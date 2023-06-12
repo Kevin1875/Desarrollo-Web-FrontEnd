@@ -1,95 +1,116 @@
 <script setup>
-import {ref} from 'vue' 
+import { ref } from "vue";
 import create from "./create.vue";
 import modify from "./modify.vue";
 import validate from "./validate.vue";
-import { computed } from '@vue/reactivity';
-
-
+import { computed } from "@vue/reactivity";
 
 let frameActive = ref(0);
+let hide = ref(false);
 
-function cambio(){
-  console.log('pasaaa')
-    if (frameActive.value === 0){
-        return {'main-d': true, 'hide': false};
-    }else{
-        return {'main-d': false, 'hide': true};
-    }
+function dis() {
+  if (!hide) {
+    return { "btn-atras": true, hide: false };
+  } else {
+    return { "btn-atras": false, hide: true };
+  }
+}
+
+function cambio() {
+  console.log("pasaaa");
+  if (frameActive.value === 0) {
+    return { "container-d": true, hide: false };
+  } else {
+    return { "container-d": false, hide: true };
+  }
 }
 
 function createS() {
-    if (frameActive.value === 1){
-        return {'': true, 'hide': false};
-    }else{
-        return {'': false, 'hide': true};
-    }
+  if (frameActive.value === 1) {
+    return { "": true, hide: false };
+  } else {
+    return { "": false, hide: true };
+  }
+}
+
+function createT() {
+  if (frameActive.value === 2) {
+    return { "": true, hide: false };
+  } else {
+    return { "": false, hide: true };
+  }
 }
 
 const classCounter = computed(() => {
-  if (!frameActive.value === 0){
-    console.log('EY')
-    return 'hide'
+  if (!frameActive.value === 0) {
+    console.log("EY");
+    return "hide";
   }
-})
+});
 
-function showing(value){
-  if (!frameActive === value){
-    console.log('pasa')
-    return {'hide': true}
+function showing(value) {
+  if (!frameActive === value) {
+    console.log("pasa");
+    return { hide: true };
   }
 }
-let showCreateD = () =>{
+
+let showPub = () => {
+  frameActive.value = 0;
+  console.log(frameActive.value);
+};
+
+let showCreateD = () => {
   frameActive.value = 1;
-  console.log(frameActive.value)
-}
-let showModifyD = () =>{
+  console.log(frameActive.value);
+};
+let showModifyD = () => {
   frameActive.value = 2;
-  console.log(frameActive.value)
-
-}
-let showValidateD = () =>{
+  console.log(frameActive.value);
+};
+let showValidateD = () => {
   frameActive.value = 3;
-  console.log(frameActive.value)
+  console.log(frameActive.value);
+};
 
-}
+let esconder = () => {
+  hide.value = true;
+};
 </script>
 <template>
-  <div >
-    <div :class="cambio()" class="prueba">
+  <div>
     <div class="top-cr">
       <div class="tittle-cr">
         <h6>PANEL ADMINISTRACIÓN</h6>
       </div>
       <div class="subtittle-cr">
         <h3>GESTIÓN DE PUBLICACIONES</h3>
-        <div class="btn-atras"></div>
+        <a href="/adminpanel"
+          ><span class="material-symbols-outlined btn"> chevron_left </span>
+        </a>
       </div>
     </div>
-  </div>
 
-
-    <div class="container-d">
-      <div class="item-d" @click="showCreateD" :class=showing(1)>Publicar</div>
-      <div class="item-d" @click="showModifyD" :class=showing(2)>Modificar</div>
-      <div class="item-d" @click="showValidateD" :class=showing(3)>Validar</div>
+    <div :class="cambio()">
+      <a href="/adminpanel/publication/create"
+        ><div class="item-d">Publicar</div>
+      </a>
+      <a href="/adminpanel/publication/modify"
+        ><div class="item-d">Modificar</div>
+      </a>
+      <a href="/adminpanel/publication/validate"
+        ><div class="item-d">Validar</div>
+      </a>
     </div>
   </div>
 
-  <create :class="createS()"/>
-  <modify class="hide"/>
-  <validate class="hide"/>
-
-
-
+  <create :class="createS()" />
+  <modify class="hide" />
+  <validate class="hide" />
 </template>
 
 <style scoped>
-
-.prueba{
-  background-color: rebeccapurple;
-}
-.hide{
+.hide {
   display: none;
 }
 .main-d {
@@ -123,10 +144,12 @@ let showValidateD = () =>{
   cursor: pointer;
 }
 
+/* ESTILOS DEL TITULO DE LA SECCIÓN*/
 .top-cr {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  color: white;
 }
 .tittle-cr h6 {
   font-weight: 500;
@@ -139,6 +162,7 @@ let showValidateD = () =>{
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  height: 40px;
 }
 .subtittle-cr h3 {
   font-weight: 700;
@@ -154,10 +178,38 @@ let showValidateD = () =>{
   align-items: center;
 }
 
-.subtittle-cr .btn-atras {
+.subtittle-cr .btn-atras-cr {
   height: 35px;
   width: 35px;
   background-color: aliceblue;
   border-radius: 50px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ESTILO DE FLECHA ATRAS */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 48;
+  color: rgb(22, 22, 22);
+  height: 30px;
+  width: 30px;
+  background-color: aliceblue;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+.material-symbols-outlined:hover {
+  height: 33px;
+  width: 33px;
 }
 </style>

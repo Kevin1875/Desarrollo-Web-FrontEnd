@@ -1,4 +1,22 @@
 <script setup>
+import axios from 'axios'
+import { ref, onMounted } from 'vue';
+let arrayDeObjetos = ref([]);
+
+// Función para llamar a la API y obtener el array de objetos
+onMounted(() => {
+  axios.get('http://localhost:3000/api/v1/document?word=csu')
+    .then(response => {
+      // Manipula la respuesta de la solicitud aquí
+      console.log(response.data);
+    })
+    .catch(error => {
+      // Maneja cualquier error de la solicitud aquí
+      console.error(error);
+    });
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
     var filas = document.querySelectorAll('.tablita tr:not(:first-child)');
     filas.forEach(function(fila) {
@@ -23,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="nn">
         <div class="encima">
-            <p>TOTAL 34 REGISTROS ENCONTRADOS</p>
+            <p>TOTAL 33 REGISTROS ENCONTRADOS</p>
         </div>
         <table class="tablita">
             <colgroup>
