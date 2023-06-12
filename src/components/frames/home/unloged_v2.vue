@@ -1,49 +1,69 @@
-<script setup>
+<script>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
-import carf from "../utils/carousel.vue";
 import slider from "../utils/slider.vue";
-import recomendationSlider from "../utils/recomendSlider.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
+import axios from "axios";
 
-let btnSimpleClass = ref("alm");
-let clickOnBottom = ref(false);
+export default {
+  components: {
+    slider,
+    simpleSearchButton,
+  },
+  setup() {
+    let btnSimpleClass = ref("alm");
+    let clickOnBottom = ref(false);
+    let inputValue = ref("");
 
-const simpleClick = () => {
-  btnSimpleClass.value = "alm2";
-  clickOnBottom.value = true;
-};
+    const simpleClick = () => {
+      btnSimpleClass.value = "alm2";
+      clickOnBottom.value = true;
+    };
 
-const isClickedOutside = ref(false);
+    const storeInputValue = () => {
+      console.log(inputValue.value);
+    };
 
-onMounted(() => {
-  const handleClickOutside = (event) => {
-    if (!clickOnBottom.value.$el.contains(event.target)) {
-      console.log("ijueputa");
-      isClickedOutside.value = true;
-    }
-  };
+    const isClickedOutside = ref(false);
 
-  document.addEventListener("click", handleClickOutside);
-});
+    onMounted(() => {
+      const handleClickOutside = (event) => {
+        if (!clickOnBottom.value.$el.contains(event.target)) {
+          console.log("ijueputa");
+          isClickedOutside.value = true;
+        }
+      };
 
-//PASAR
-const prueba = ref("simplesearch?word=csu");
-const inputValue = ref("");
-const storedValue = ref("");
+      document.addEventListener("click", handleClickOutside);
+    });
 
-const storeInputValue = () => {
-  storedValue.value = inputValue.value;
-  window.location.href = "/simplesearch?word=" + storedValue.value;
+    let resultado;
+
+    axios
+      .get("http://localhost:3000/api/v1/document?year=2023")
+      .then(function (response) {
+        // handle success
+        resultado = response.data.data;
+      });
+
+    return {
+      resultado,
+      btnSimpleClass,
+      clickOnBottom,
+      inputValue,
+      simpleClick,
+      storeInputValue,
+    };
+  },
 };
 </script>
 
 <template>
   <div class="main-lg">
     <div class="tituloz">
-      <H1
-        >SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
-        RÉGIMEN LEGAL</H1
-      >
+      <h1>
+        SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
+        RÉGIMEN LEGAL
+      </h1>
     </div>
     <div class="m1">
       <div class="messagge-main">
@@ -67,7 +87,7 @@ const storeInputValue = () => {
             <div class="search_input">
               <input
                 type="text"
-                placeholder="Ingresa tu busqueda"
+                placeholder="Ingresa tu búsqueda"
                 v-model="inputValue"
               />
               <a @click="storeInputValue"
@@ -77,22 +97,18 @@ const storeInputValue = () => {
           </div>
           <div v-else class="pre-charge">
             <simpleSearchButton v-slot:name-button>
-              <a @click="simpleClick">Busqueda Simple</a>
+              <a @click="simpleClick">Búsqueda Simple</a>
             </simpleSearchButton>
           </div>
 
           <simpleSearchButton v-slot:name-button
-            ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton
+            ><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton
           >
         </div>
       </div>
-      <div class="recomendaciones">
-        <div class="titulo">RECOMENDACIONES</div>
-        <recomendationSlider />
-      </div>
     </div>
     <div class="noticias">
-      <slider />
+      <slider :data="resultado" />
     </div>
   </div>
 </template>
@@ -173,16 +189,6 @@ const storeInputValue = () => {
 
 .messagge-main {
   width: 35%;
-}
-
-.recomendaciones {
-  max-width: 550px;
-  min-width: 550px;
-}
-
-.recomendaciones rec {
-  text-align: center;
-  color: brown;
 }
 
 .Desc {

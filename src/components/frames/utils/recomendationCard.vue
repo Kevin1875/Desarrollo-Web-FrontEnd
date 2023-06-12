@@ -1,8 +1,7 @@
 <template>
   <div class="contCard">
     <h4 class="textCard">
-      Acuerdo 211 de 1945 Consejo Directivo (actual Consejo Superior
-      Universitario)
+      {{ props.title }}
     </h4>
   </div>
 </template>
@@ -13,12 +12,22 @@
   text-align: center;
 }
 
-.contCard{
+.contCard {
   padding: 10px 10px;
   display: flex;
-  align-items:baseline;
-
+  align-items: baseline;
 }
 </style>
-<script setup>
+<script>
+import { defineProps } from "vue";
+
+export default {
+  setup() {
+    const props = defineProps({ title: String });
+
+    return {
+      props,
+    };
+  },
+};
 </script>

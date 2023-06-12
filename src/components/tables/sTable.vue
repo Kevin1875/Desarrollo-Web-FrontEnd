@@ -1,99 +1,49 @@
-<script setup>
-import { Axios } from 'axios';
+<script>
+import axios from "axios";
+import { reactive, inject } from "vue";
 
-document.addEventListener("DOMContentLoaded", function () {
-  var filas = document.querySelectorAll(".table-sTable td");
-  filas.forEach(function (fila) {
-    fila.addEventListener("click", function () {
-      // Obtener el valor de redirección de la fila
-      var url = this.dataset.redirect;
-      // Redireccionar al usuario a la URL deseada
-      window.location.href = url;
+export default {
+  props: {
+    db: {
+      type: String,
+      required: true,
+    },
+  },
+  setup() {
+    const search = inject("search");
+
+    const resultado = reactive({
+      data: [],
     });
-  });
-});
 
-let lista = [
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-  {
-    año: 2023,
-    numero: 3,
-    tipo: "Circular",
-    autoridad: "FACULTAD DE MINAS",
-    link: "https://unal.edu.co/",
-  },
-];
+    axios.get(search.dbDefault).then(function (response) {
+      // handle success
+      resultado.data = response.data.data;
+    });
 
-defineProps(data = {
-  palabra: "",
-  tipo: "",
-  año: "",
-  cuerpoCol:""
-})
+    document.addEventListener("DOMContentLoaded", function () {
+      var filas = document.querySelectorAll(".table-sTable td");
+      filas.forEach(function (fila) {
+        fila.addEventListener("click", function () {
+          // Obtener el valor de redirección de la fila
+          var url = this.dataset.redirect;
+          // Redireccionar al usuario a la URL deseada
+          window.location.href = url;
+        });
+      });
+    });
 
-const response = "";
-
-axios.get('https://localhost:3000/document?words='+data.palabra)
-  .then(function (response) {
-    // handle success
-    response = response;
-    console.log(response);
-  })
-
+    return {
+      resultado,
+    };
+  },
+};
 </script>
 
 <template>
   <div class="main-sTable">
     <div class="top-tittle">
-      <p>TOTAL {{  }} REGISTROS ENCONTRADOS</p>
+      <p>TOTAL DE {{ resultado.data.length }} RESULTADOS</p>
     </div>
     <table class="table-sTable">
       <colgroup>
@@ -104,30 +54,30 @@ axios.get('https://localhost:3000/document?words='+data.palabra)
       </colgroup>
       <tr>
         <th class="low-head-table col-1">AÑO</th>
-        <th class="low-head-table col-2">NUMERO</th>
+        <th class="low-head-table col-2">TITULO</th>
         <th class="low-head-table col-2">TIPO</th>
         <th class="low-head-table col-3">CUERPO COLEGIADO</th>
       </tr>
-      <tr v-for="item in lista" class="hovercito">
+      <tr v-for="item in resultado.data" class="hovercito" :key="item._id">
         <td
-          v-text="item.año"
+          v-text="item.publicationDate"
           class="fila-columna"
-          :data-redirect="item.link"
+          :data-redirect="'/document/' + item._id"
         ></td>
         <td
-          v-text="item.numero"
+          v-text="item.title"
           class="fila-columna"
-          :data-redirect="item.link"
+          :data-redirect="'/document/' + item._id"
         ></td>
         <td
-          v-text="item.tipo"
+          v-text="item.type"
           class="fila-columna"
-          :data-redirect="item.link"
+          :data-redirect="'/document/' + item._id"
         ></td>
         <td
-          v-text="item.autoridad"
+          v-text="item.collegiateBodies"
           class="fila-columna"
-          :data-redirect="item.link"
+          :data-redirect="'/document/' + item._id"
         ></td>
       </tr>
     </table>
