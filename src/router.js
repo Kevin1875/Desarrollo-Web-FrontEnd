@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import home from "./components/frames/home/home.vue";
-import unloged from "./components/frames/home/unloged.vue";
+import unloged from "./components/frames/home/unloged_v2.vue";
 
 const router = createRouter({
   history: createWebHistory(),
