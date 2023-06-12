@@ -1,4 +1,6 @@
 <script setup>
+import { Axios } from 'axios';
+
 document.addEventListener("DOMContentLoaded", function () {
   var filas = document.querySelectorAll(".table-sTable td");
   filas.forEach(function (fila) {
@@ -69,12 +71,29 @@ let lista = [
     link: "https://unal.edu.co/",
   },
 ];
+
+defineProps(data = {
+  palabra: "",
+  tipo: "",
+  año: "",
+  cuerpoCol:""
+})
+
+const response = "";
+
+axios.get('https://localhost:3000/document?words='+data.palabra)
+  .then(function (response) {
+    // handle success
+    response = response;
+    console.log(response);
+  })
+
 </script>
 
 <template>
   <div class="main-sTable">
     <div class="top-tittle">
-      <p>TOTAL 34 REGISTROS ENCONTRADOS</p>
+      <p>TOTAL {{  }} REGISTROS ENCONTRADOS</p>
     </div>
     <table class="table-sTable">
       <colgroup>

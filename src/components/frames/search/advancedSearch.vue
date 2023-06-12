@@ -4,13 +4,21 @@ import { ref, onMounted } from "vue";
 import simpleSearchButton from '../../buttons/simpleSearchButton.vue';
 import sTable from '../../tables/sTable.vue'
 import asform from '../utils/asform.vue'
+
+const data = {
+  palabra: "",
+  tipo: "",
+  año: "",
+  cuerpoCol:""
+}
+
 </script>
 
 <template>
     <div class="main-as">
-        <asform @data/>
+        <asform @Data="data"/>
         <div class="container-table"> 
-            <sTable/>
+            <sTable :data="data"/>
         </div>
     </div>
 </template>

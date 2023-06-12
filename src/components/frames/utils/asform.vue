@@ -28,7 +28,7 @@ const tipoDocumentos = [
   { value: 1, label: "Sentencia" },
 ];
 
-const emits = defineEmits('data');
+const emits = defineEmits('Data');
 
 const data = {
   palabra: "",
@@ -37,7 +37,7 @@ const data = {
   cuerpoCol:""
 }
 
-function crud (){emit('data', data)}
+function crud (){emit('Data', data)}
 
 </script>
 
