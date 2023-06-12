@@ -6,10 +6,10 @@ const cuerposColegiados = [
     value: 1,
     label: "Comisión Delegataria del Consejo Superior Universitario",
   },
-  { value: 1, label: "Comisión Nacional de Carrera Administrativa" },
-  { value: 1, label: "Comité Académico Administrativo Sede Bogotá" },
-  { value: 1, label: "Comité Académico Administrativo Sede Manizales" },
-  { value: 1, label: "Comité Académico Administrativo Sede Medellín" },
+  { value: 2, label: "Comisión Nacional de Carrera Administrativa" },
+  { value: 3, label: "Comité Académico Administrativo Sede Bogotá" },
+  { value: 4, label: "Comité Académico Administrativo Sede Manizales" },
+  { value: 5, label: "Comité Académico Administrativo Sede Medellín" },
 ];
 
 const tipoDocumentos = [
@@ -27,6 +27,14 @@ const tipoDocumentos = [
   { value: 1, label: "Resolución" },
   { value: 1, label: "Sentencia" },
 ];
+
+let palabra = "";
+let cuerpocol = "";
+let tipo = "";
+let año = "";
+
+function test (){console.log(palabra)}
+
 </script>
 
 <template>
@@ -41,10 +49,11 @@ const tipoDocumentos = [
       </div>
 
       <div class="formSection">
-        <form>
+        <form @submit.prevent="test">
           <div class="formComponent">
-            <label for="nombre">Palabra clave</label>
+            <label for="nombre">Palabra clave {{ palabra }}</label>
             <input
+              v-model="palabra"
               type="text"
               id="nombre"
               name="nombre"
@@ -52,8 +61,8 @@ const tipoDocumentos = [
             />
           </div>
           <div class="formComponent">
-            <label for="pais">Cuerpo Colegiado:</label>
-            <select class="sle" id="pais" name="pais" v-model="xd">
+            <label for="tipoDocumento">Tipo de Documento:</label>
+            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="tipo">
               <option v-for="option in tipoDocumentos " :value="option.value">
                 {{ option.label }}
               </option>
@@ -61,17 +70,18 @@ const tipoDocumentos = [
           </div>
 
           <div class="formComponent">
-            <label for="email">Año</label>
+            <label for="año">Año</label>
             <input
-              type="email"
-              id="email"
-              name="email"
+              v-model="año"
+              type="number"
+              id="año"
+              name="año"
               placeholder="Ingrese su email"
             />
           </div>
           <div class="formComponent">
-            <label for="pais">Cuerpo Colegiado:</label>
-            <select class="sle" id="pais" name="pais" v-model="xd">
+            <label for="cuerpoCol">Cuerpo Colegiado:</label>
+            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="cuerpocol">
               <option v-for="option in cuerposColegiados" :value="option.value">
                 {{ option.label }}
               </option>
@@ -81,9 +91,6 @@ const tipoDocumentos = [
           <div class="botones">
             <simpleSearchButton class="wel" v-slot:name-button type="submit"
               >Enviar</simpleSearchButton
-            >
-            <simpleSearchButton v-slot:name-button type="reset"
-              >Borrar</simpleSearchButton
             >
           </div>
         </form>

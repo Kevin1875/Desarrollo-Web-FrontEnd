@@ -27,15 +27,15 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = url;
       });
     });
-});
+})
 
 </script>
 
 <template>
     <div class="ss">
         <div class="Top">
-            <p>Busqueda: </p>
-            <input/>
+            <p>Busqueda:</p>
+            <input v-model="palabra"/>
         </div>
 
     </div>
