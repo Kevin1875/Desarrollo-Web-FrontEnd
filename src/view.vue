@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import create from "./create.vue";
-//import modify from "./modify.vue";
-//import validate from "./validate.vue";
+import modify from "./modify.vue";
+import validate from "./validate.vue";
 import { computed } from "@vue/reactivity";
 
 let frameActive = ref(0);
@@ -84,7 +84,7 @@ let esconder = () => {
         <h6>PANEL ADMINISTRACIÓN</h6>
       </div>
       <div class="subtittle-cr">
-        <h3>GESTIÓN DE USUARIOS</h3>
+        <h3>GESTIÓN DE PUBLICACIONES</h3>
         <a href="/adminpanel"
           ><span class="material-symbols-outlined btn"> chevron_left </span>
         </a>
@@ -92,11 +92,14 @@ let esconder = () => {
     </div>
 
     <div :class="cambio()">
-      <a href="/adminpanel/user/create"
-        ><div class="item-d">Crear</div>
+      <a href="/adminpanel/publication/create"
+        ><div class="item-d">Publicar</div>
       </a>
-      <a href="/adminpanel/user/delete"
-        ><div class="item-d">Eliminar</div>
+      <a href="/adminpanel/publication/modify"
+        ><div class="item-d">Modificar</div>
+      </a>
+      <a href="/adminpanel/publication/validate"
+        ><div class="item-d">Validar</div>
       </a>
     </div>
   </div>

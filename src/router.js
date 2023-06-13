@@ -11,10 +11,11 @@ const router = createRouter({
       name: "home",
       component: home,
     },
+
     {
-      path: "/unloged",
-      name: "unloged",
-      component: unloged,
+      path: "/login",
+      name: "login",
+      component: () => import("./components/frames/auth/login.vue")
     },
     {
       path: "/simplesearch",
@@ -48,7 +49,7 @@ const router = createRouter({
     {
       path: "/adminpanel/publication/create",
       name: "Create Document",
-      component: () => import("./components/frames/admin/documents/create copy.vue"),
+      component: () => import("./components/frames/admin/documents/create.vue"),
     },
     {
       path: "/adminpanel/publication/validate",
@@ -59,16 +60,35 @@ const router = createRouter({
 
     // COLLEGE BODIES
     {
-      path: "/adminpanel/collegebodies",
+      path: "/adminpanel/collegebody",
       name: "BB",
       component: () => import("./components/frames/admin/bodies/view.vue"),
     },
+
     {
-      path: "/adminpanel/users",
-      name: "CC",
-      component: () => import("./components/frames/admin/documents/view.vue"),
+      path: "/adminpanel/collegebody/create",
+      name: "BB Create",
+      component: () => import("./components/frames/admin/bodies/create.vue"),
     },
 
+    //----------------------------------------
+
+    // USERS ROUTES
+    {
+      path: "/adminpanel/user",
+      name: "USER",
+      component: () => import("./components/frames/admin/users/view.vue"),
+    },
+    {
+      path: "/adminpanel/user/create",
+      name: "USER create",
+      component: () => import("./components/frames/admin/users/create.vue"),
+    },
+    {
+      path: "/adminpanel/user/delete",
+      name: "USER delete",
+      component: () => import("./components/frames/admin/users/delete.vue"),
+    },
     //DOCUMENT ROUTES
     {
       path: "/document/:id",

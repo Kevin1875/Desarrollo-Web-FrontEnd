@@ -39,10 +39,16 @@ window.addEventListener("scroll", function () {
     <!--
             <div class="login"><div class="bt-login"><a @:click="clickcito">{{ varLogin }}</a> </div></div>
         -->
+<<<<<<< Updated upstream
     <div class="login">
       <div class="bt-login"><a @click="loginAction">Login</a></div>
     </div>
   </header>
+=======
+        <div class="login"><div class="bt-login"><a href="/login" @click="loginAction">Login</a> </div></div>
+
+    </header>
+>>>>>>> Stashed changes
 </template>
 
 <style scoped>

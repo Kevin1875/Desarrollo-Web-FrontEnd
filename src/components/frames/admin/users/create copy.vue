@@ -2,7 +2,12 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const document = ref(null);
+const nombre = ref(null);
+const correo = ref(null);
+const contraseña = ref(null);
+const contraseña_confirmada = ref(null);
+const prefencias = ref([]);
+
 const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);
 const authorities = ref([]);
@@ -103,11 +108,13 @@ function sentDocument() {
   formData.append("entryIntoForce", exp_date_formated.value);
   formData.append("expeditionDate", entry_date_formated.value);
 
+  axios;
   axios
-    .post("http://localhost:3000/api/v1/document", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // Importante: establece el encabezado 'Content-Type' como 'multipart/form-data'
-      },
+    .post("localhost:3000/api/v1/users", {
+      name: nombre.value,
+      email: correo.value,
+      password: contraseña.value,
+      preferences: contraseña_confirmada.value,
     })
     .then((response) => {
       console.log("Melo");
@@ -134,6 +141,16 @@ function handleFileSelect(event) {
   console.log(selectedFileName.value);
   // Aquí puedes hacer algo con el archivo seleccionado
 }
+
+const preferencias = ref([{ valor: "" }, { valor: "" }, { valor: "" }]);
+
+function agregarPreferencia() {
+  preferencias.value.push({ valor: "" });
+}
+
+function eliminarPreferencia(index) {
+  preferencias.value.splice(index, 1);
+}
 </script>
 
 <template>
@@ -143,107 +160,74 @@ function handleFileSelect(event) {
         <h6>PANEL ADMINISTRACIÓN</h6>
       </div>
       <div class="subtittle-cr">
-        <h3>GESTIÓN DE PUBLICACIONES</h3>
-        <div class="status">CREAR PUBLICACIÓN</div>
-        <a href="/adminpanel/publication">
+        <h3>GESTIÓN DE USUARIOS</h3>
+        <div class="status">CREAR USUARIO</div>
+        <a href="/adminpanel/user">
           <span class="material-symbols-outlined btn"> chevron_left </span>
         </a>
       </div>
     </div>
 
-    <div style="margin-top: 50px;">
+    <div style="margin-top: 50px">
       <form @submit.prevent="submitForm">
         <div class="main-form">
           <div class="cont-1">
-            <label>Título del documento: </label>
+            <label>Nombre completo: </label>
             <input
               type="text"
-              v-model="title"
+              v-model="nombre"
               placeholder="Ingrese el título"
               class="input_title"
             />
 
-            <label for="documentType">Tipo de documento: </label>
-            <select
-              class="sle"
-              v-model="documentType"
-              id="documentType"
-              name="ijueplatano"
-            >
-              <option v-for="option in tipoDocumentos" :value="option.label">
-                {{ option.label }}
-              </option>
-            </select>
+            <label>Correo: </label>
+            <input
+              type="text"
+              v-model="correo"
+              placeholder="Ingrese el título"
+              class="input_title"
+            />
+
+            <label>Contraseña: </label>
+            <input
+              type="password"
+              v-model="contraseña"
+              placeholder="Ingrese el título"
+              class="input_title"
+            />
+
+            <label>Confirmar contraseña: </label>
+            <input
+              type="password"
+              v-model="contraseña_confirmada"
+              placeholder="Ingrese el título"
+              class="input_title"
+            />
 
             <div>
-              <label
-                >Seleccione el cuerpo colegiado que firmará el documento:
-              </label>
-
-              <label for="option1">
+              <label>Preferencias:</label>
+              <div
+                v-for="(preferencia, index) in preferencias"
+                :key="index"
+                class="pref-class"
+              >
                 <input
-                  v-model="authorities"
-                  type="checkbox"
-                  id="option1"
-                  name="options"
-                  value="646ea36596524cfb4275f924"
+                  type="text"
+                  v-model="preferencia.valor"
+                  placeholder="ingrese su preferencia"
                 />
-                Consejo De Paros
-              </label>
-              <br />
-              <label for="option2">
-                <input
-                  v-model="authorities"
-                  type="checkbox"
-                  id="option2"
-                  name="options"
-                  value="646eb620be39ca3f71662ab3"
-                />
-                Consejo De Minaas
-              </label>
-            </div>
-
-            <div class="file-input">
-              <input
-                type="file"
-                ref="fileInput"
-                @change="handleFileSelect"
-                for="file-1"
-              />
-              <button @click="handleButtonClick" type="button" id="file-1">
-                {{ selectedFileName }}
+                <button
+                  @click="eliminarPreferencia(index)"
+                  class="del-preff-class"
+                >
+                  x
+                </button>
+              </div>
+              <button @click="agregarPreferencia" class="agg-preff-class">
+                +
               </button>
             </div>
-          </div>
-          <div>
-            <div class="cont-2">
-              <label for="fecha">Fecha de publicación:</label>
-              <input
-                v-model="pub_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
 
-              <label for="fecha">Fecha de expedición:</label>
-              <input
-                v-model="exp_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
-
-              <label for="fecha">Fecha de entrada en vigencia:</label>
-              <input
-                v-model="entry_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
-            </div>
             <input type="submit" value="Enviar" class="btn-submit" />
           </div>
         </div>
@@ -254,6 +238,7 @@ function handleFileSelect(event) {
 
 <style scoped>
 .btn-submit {
+  margin-top: 20px;
   width: 100%;
   height: 50px;
   border: none;
@@ -315,68 +300,10 @@ function handleFileSelect(event) {
   font-weight: 500;
 }
 
-.cont-2 {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 15px;
-  padding: 20px;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0px 0 20px 0;
-}
-
-.cont-2 .input_date {
-  background-color: #223a73;
-  width: 200px;
-  padding: 5px 10px;
-  outline: solid 2px gray;
-  border: none;
-  border-radius: 10px;
-  color: aliceblue;
-  transition: all 0.7s ease;
-  margin: -5px 0 20px 0;
-}
-
-.cont-2 .input_date:hover {
-  outline: solid 2px deepskyblue;
-}
-
-.cont-2 .input_date::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Invierte los colores del icono */
-}
-
 .main-form {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-}
-
-.comment-cr textarea {
-  background-color: #223a73;
-  border: none;
-  min-height: 100px;
-  width: 100%;
-  border-radius: 10px;
-  color: white;
-  transition: all 0.3s ease;
-  border: solid 2px gray;
-  min-height: 200px;
-}
-
-.comment-cr textarea:focus {
-  border: solid 2px rgb(151, 151, 151);
-  min-height: 100px;
-  width: 100%;
-  outline: none;
-  min-height: 200px;
-}
-
-.comment-cr label {
-  font-weight: 400;
-  font-size: 15px;
-  padding-left: 10px;
-  margin: 0;
 }
 
 .top-cr {
@@ -416,34 +343,6 @@ function handleFileSelect(event) {
   align-items: center;
 }
 
-.subtittle-cr .btn-atras {
-  height: 35px;
-  width: 35px;
-  background-color: aliceblue;
-  border-radius: 50px;
-}
-
-.form-cr {
-  max-width: 700px;
-  background-color: rgba(255, 255, 255, 0.075);
-  margin: 20px 0;
-  padding: 20px;
-  display: flex;
-  border-radius: 10px;
-  flex-direction: column;
-}
-
-.docview-cr {
-  height: 100vh;
-  width: 100%;
-  background-color: rgb(24, 43, 95);
-}
-
-.comments-cr {
-  height: 100px;
-  background-color: aquamarine;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -452,77 +351,6 @@ a {
 a:hover {
   text-decoration: none;
   color: inherit;
-}
-
-/*ESTILOS FORM TIPO DE DOCUMENTO */
-.formComponent {
-  padding: 5px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.formComponent label {
-  font-weight: 400;
-  font-size: 15px;
-  padding-left: 10px;
-  margin: 0;
-}
-
-.formComponent input {
-  width: 100%;
-  border: 2px solid;
-  border-color: gray;
-  border-radius: 10px;
-  background-color: transparent;
-  color: white;
-  transition: all 0.7s ease;
-  height: 40px;
-  padding-left: 20px;
-}
-
-.formComponent input:hover {
-  outline: none;
-  border: 2px solid;
-  border-color: deepskyblue;
-}
-
-.formComponent input:focus {
-  outline: none;
-  border: 2px solid;
-  border-color: deepskyblue;
-}
-
-.formComponent input::placeholder {
-  font-weight: 500;
-}
-
-.sle {
-  background-color: #223a73;
-  color: white;
-  transition: all 2s ease;
-  height: 40px;
-  border-radius: 10px;
-  border: 2px solid;
-  border-color: gray;
-  margin-top: -5px;
-  margin-bottom: 20px;
-}
-
-.sle:focus {
-  background-color: #223a73;
-  color: white;
-  border: 2px solid;
-  border-color: gray;
-  outline: none;
-}
-
-.sle:focus-visible {
-  background-color: #223a73;
-  color: white;
-  border: 2px solid;
-  border-color: gray;
-  outline: none;
-  border-color: deepskyblue;
 }
 
 /* ESTILO DE FLECHA ATRAS */
@@ -543,31 +371,78 @@ a:hover {
   width: 33px;
 }
 
-/*ESTILOS DEL DROP ZONE AGARRATE DE LA SILLA MANO*/
-.file-input {
-  display: inline-block;
+.pref-class {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+  align-items: center;
 }
 
-.file-input input[type="file"] {
-  display: none;
+.pref-class input {
+  width: 200px;
+  border: 2px solid;
+  border-color: gray;
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  transition: all 0.7s ease;
+  height: 40px;
+  padding-left: 20px;
 }
 
-.file-input button {
-  background-color: #223a73;
-  width: 100%;
-  height: 50px;
-  color: #fff;
-  padding: 10px 20px;
+.pref-class input:hover {
+  outline: none;
+  border: 2px solid;
+  border-color: deepskyblue;
+}
+
+.pref-class input:focus {
+  outline: none;
+  border: 2px solid;
+  border-color: deepskyblue;
+}
+
+.pref-class input::placeholder {
+  font-weight: 500;
+}
+
+.del-preff-class {
+  margin-left: 10px;
+  border-radius: 50px;
+  width: 25px;
+  height: 25px;
+  font-weight: bolder;
+  font-size: 10px;
+  color: rgb(199, 199, 199);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: dashed 2px gray;
-  transition: all 0.3s ease-in-out;
-  margin-top: 20px;
+  outline: solid 2px gray;
+  background-color: transparent;
+  transition: all 0.7s ease;
 }
 
-.file-input button:hover {
+.del-preff-class:hover {
+  color: rgb(199, 199, 199);
+  border: none;
+  outline: solid 2px deepskyblue;
   background-color: #223a73;
-  outline: dashed 2px rgb(16, 160, 218);
+}
+
+.agg-preff-class {
+  background-color: #223a73;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  border: transparent;
+  outline: solid 1px gray;
+  border-radius: 100px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.agg-preff-class:hover {
+  outline: solid 1px deepskyblue;
 }
 </style>

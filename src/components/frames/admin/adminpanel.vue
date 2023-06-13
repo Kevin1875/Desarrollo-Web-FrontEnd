@@ -21,17 +21,22 @@ import userPanel from "./users/view.vue";
       </div>
 
       <div class="container-ap">
-        <div class="tittle-container-ap">GESTIÓN DE CUERPOS COLEGIADOS</div>
-        <div class="text-container-ap">
-          Creación de cuerpos colegiados, administración de permisos y usuarios
-        </div>
+        <a href="/adminpanel/collegebody">
+          <div class="tittle-container-ap">GESTIÓN DE CUERPOS COLEGIADOS</div>
+          <div class="text-container-ap">
+            Creación de cuerpos colegiados, administración de permisos y
+            usuarios
+          </div>
+        </a>
       </div>
 
       <div class="container-ap">
-        <div class="tittle-container-ap">GESTIÓN DE USUARIOS</div>
-        <div class="text-container-ap">
-          Crear usuarios, eliminar, administrar roles y permisos
-        </div>
+        <a href="/adminpanel/user">
+          <div class="tittle-container-ap">GESTIÓN DE USUARIOS</div>
+          <div class="text-container-ap">
+            Crear usuarios, eliminar, administrar roles y permisos
+          </div>
+        </a>
       </div>
     </div>
   </div>
@@ -90,12 +95,12 @@ import userPanel from "./users/view.vue";
   transition: all 0.5s ease-in-out;
 }
 
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
 
-a:hover{
+a:hover {
   text-decoration: none;
   color: inherit;
 }
