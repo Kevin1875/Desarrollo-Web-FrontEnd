@@ -1,49 +1,27 @@
-<script setup>
+<script>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
-import carf from "../utils/carousel.vue";
 import slider from "../utils/slider.vue";
 import recomendationSlider from "../utils/recomendSlider.vue";
 import { ref, onMounted } from "vue";
 
-let btnSimpleClass = ref("alm");
-let clickOnBottom = ref(false);
+export default {
+  components: {
+    simpleSearchButton,
+    slider,
+    recomendationSlider,
+  },
+  setup() {
 
-const simpleClick = () => {
-  btnSimpleClass.value = "alm2";
-  clickOnBottom.value = true;
-};
+  }
+}
 
-const isClickedOutside = ref(false);
-
-onMounted(() => {
-  const handleClickOutside = (event) => {
-    if (!clickOnBottom.value.$el.contains(event.target)) {
-      console.log("ijueputa");
-      isClickedOutside.value = true;
-    }
-  };
-
-  document.addEventListener("click", handleClickOutside);
-});
-
-//PASAR
-const prueba = ref("simplesearch?word=csu");
-const inputValue = ref("");
-const storedValue = ref("");
-
-const storeInputValue = () => {
-  storedValue.value = inputValue.value;
-  window.location.href = "/simplesearch?word=" + storedValue.value;
-};
 </script>
 
 <template>
   <div class="main-lg">
     <div class="tituloz">
-      <H1
-        >SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
-        RÉGIMEN LEGAL</H1
-      >
+      <H1>SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
+        RÉGIMEN LEGAL</H1>
     </div>
     <div class="m1">
       <div class="messagge-main">
@@ -63,27 +41,9 @@ const storeInputValue = () => {
         </p>
 
         <div :class="btnSimpleClass">
-          <div v-if="clickOnBottom">
-            <div class="search_input">
-              <input
-                type="text"
-                placeholder="Ingresa tu busqueda"
-                v-model="inputValue"
-              />
-              <a @click="storeInputValue"
-                ><span class="material-symbols-outlined"> search </span></a
-              >
-            </div>
-          </div>
-          <div v-else class="pre-charge">
-            <simpleSearchButton v-slot:name-button>
-              <a @click="simpleClick">Busqueda Simple</a>
-            </simpleSearchButton>
-          </div>
+          <simpleSearchButton v-slot:name-button> <a href="/simplesearch">Búsqueda Simple</a> </simpleSearchButton>
 
-          <simpleSearchButton v-slot:name-button
-            ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton
-          >
+          <simpleSearchButton v-slot:name-button><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton>
         </div>
       </div>
       <div class="recomendaciones">
@@ -121,10 +81,12 @@ const storeInputValue = () => {
   outline: none;
   border-color: #0500ff;
 }
+
 .search_input input:hover {
   outline: none;
   border-color: #0500ff;
 }
+
 .alm {
   max-width: 340px;
   display: flex;
@@ -138,15 +100,18 @@ const storeInputValue = () => {
   height: 80px;
   justify-content: space-between;
 }
+
 .main-lg {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .tituloz {
   width: 100%;
   font-weight: bold;
 }
+
 .tituloz h1 {
   width: 100%;
   font-weight: bold;

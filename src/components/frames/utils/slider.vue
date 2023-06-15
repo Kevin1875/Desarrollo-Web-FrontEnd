@@ -8,7 +8,7 @@ export default {
     recommendationCard,
   },
   setup() {
-    let resultado = reactive({
+    const resultado = reactive({
       data: [],
     });
 

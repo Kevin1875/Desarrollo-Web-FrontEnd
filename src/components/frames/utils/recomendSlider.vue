@@ -1,97 +1,106 @@
+<script>
+import { reactive, onMounted } from "vue";
+import axios from "axios";
+
+export default {
+  setup() {
+    // document.addEventListener("DOMContentLoaded", function () {
+    //   var slides = document.querySelectorAll(".slide");
+    //   var dots = document.querySelectorAll(".dot");
+    //   var currentSlide = 0;
+    //   var intervalId;
+
+    //   // Muestra el slide actual
+    //   function showSlide() {
+    //     // Oculta todos los slides
+    //     for (var i = 0; i < slides.length; i++) {
+    //       slides[i].classList.remove("active");
+    //     }
+
+    //     // Oculta todos los puntos de navegación
+    //     for (var i = 0; i < dots.length; i++) {
+    //       dots[i].classList.remove("active");
+    //     }
+
+    //     // Muestra el slide actual y activa el punto de navegación correspondiente
+    //     slides[currentSlide].classList.add("active");
+    //     dots[currentSlide].classList.add("active");
+    //   }
+
+    //   // Avanza al siguiente slide
+    //   function nextSlide() {
+    //     currentSlide++;
+    //     if (currentSlide >= slides.length) {
+    //       currentSlide = 0;
+    //     }
+    //     showSlide();
+    //   }
+
+    //   // Retrocede al slide anterior
+    //   function prevSlide() {
+    //     currentSlide--;
+    //     if (currentSlide < 0) {
+    //       currentSlide = slides.length - 1;
+    //     }
+    //     showSlide();
+    //   }
+
+    //   // Mostrar el slide inicial
+    //   showSlide();
+
+    //   // Obtener referencias a los botones de siguiente y anterior
+    //   var nextBtn = document.getElementById("nextBtn");
+    //   var prevBtn = document.getElementById("prevBtn");
+
+    //   // Escucha los eventos de los botones de siguiente y anterior
+    //   nextBtn.addEventListener("click", function () {
+    //     clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
+    //     nextSlide();
+    //   });
+    //   prevBtn.addEventListener("click", function () {
+    //     clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
+    //     prevSlide();
+    //   });
+
+    //   // Cambiar automáticamente el slide cada 5 segundos
+    //   intervalId = setInterval(nextSlide, 5000);
+    // });
+
+    const resultado = reactive({
+      data: [],
+    });
+
+    onMounted(() => {
+      axios.get("http://localhost:3000/api/v1/document?collegiateBodies=646eb620be39ca3f71662ab3").then(function (response) {
+        // handle success
+        resultado.data = Object.values(response.data.data).slice(0, 10);
+      });
+    });
+
+    function redirect(id) {
+      const redirectURL = "/document/" + id;
+      // Realiza cualquier lógica adicional antes de la redirección si es necesario
+      // Realiza la redirección
+      window.location.href = redirectURL;
+    }
+
+    return {
+      resultado,
+      redirect,
+    }
+  },
+}
+</script>
+
 <template>
   <div class="slider">
-    <div class="slide">
-      <div class="rs-container" v-for="item in resultado.data" :key="item._id" @click="redirect(item._id)">
+    <div class="slide" v-for="item in resultado.data" :key="item._id" @click="redirect(item._id)">
+      <div class="rs-container">
         <h5>
           {{ item.title }}
         </h5>
         <p>
-          {{ item.collegiateBodies }}
-        </p>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="rs-container">
-        <h3>
-          Acuerdo 304 de 2017 Consejo Directivo (actual Consejo Superior
-          Universitario)
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="rs-container">
-        <h3>
-          Acuerdo 12 de 2021 Consejo Directivo (actual Consejo Superior
-          Universitario)
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="rs-container">
-        <h3>
-          Acuerdo 92 de 2018 Consejo Directivo (actual Consejo Superior
-          Universitario)
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="rs-container">
-        <h3>
-          Acuerdo 211 de 1945 Consejo Directivo (actual Consejo Superior
-          Universitario)
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="rs-container">
-        <h3>
-          Acuerdo 211 de 1945 Consejo Directivo (actual Consejo Superior
-          Universitario)
-        </h3>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Preferencias asociadas : Consejo de Minas
         </p>
       </div>
     </div>
@@ -173,67 +182,3 @@
   background-color: #555;
 }
 </style>
-
-<script setup>
-document.addEventListener("DOMContentLoaded", function () {
-  var slides = document.querySelectorAll(".slide");
-  var dots = document.querySelectorAll(".dot");
-  var currentSlide = 0;
-  var intervalId;
-
-  // Muestra el slide actual
-  function showSlide() {
-    // Oculta todos los slides
-    for (var i = 0; i < slides.length; i++) {
-      slides[i].classList.remove("active");
-    }
-
-    // Oculta todos los puntos de navegación
-    for (var i = 0; i < dots.length; i++) {
-      dots[i].classList.remove("active");
-    }
-
-    // Muestra el slide actual y activa el punto de navegación correspondiente
-    slides[currentSlide].classList.add("active");
-    dots[currentSlide].classList.add("active");
-  }
-
-  // Avanza al siguiente slide
-  function nextSlide() {
-    currentSlide++;
-    if (currentSlide >= slides.length) {
-      currentSlide = 0;
-    }
-    showSlide();
-  }
-
-  // Retrocede al slide anterior
-  function prevSlide() {
-    currentSlide--;
-    if (currentSlide < 0) {
-      currentSlide = slides.length - 1;
-    }
-    showSlide();
-  }
-
-  // Mostrar el slide inicial
-  showSlide();
-
-  // Obtener referencias a los botones de siguiente y anterior
-  var nextBtn = document.getElementById("nextBtn");
-  var prevBtn = document.getElementById("prevBtn");
-
-  // Escucha los eventos de los botones de siguiente y anterior
-  nextBtn.addEventListener("click", function () {
-    clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
-    nextSlide();
-  });
-  prevBtn.addEventListener("click", function () {
-    clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
-    prevSlide();
-  });
-
-  // Cambiar automáticamente el slide cada 5 segundos
-  intervalId = setInterval(nextSlide, 5000);
-});
-</script>
