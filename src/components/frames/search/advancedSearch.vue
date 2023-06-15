@@ -26,9 +26,12 @@ export default {
     watch(
       () => search.dbDefault,
       (newValue) => {
+        console.log(newValue);
         axios.get(newValue).then(function (response) {
           // handle success
           resultado.data = response.data.data;
+        }).catch(error => {
+          console.error(error);
         });
       }
     );
@@ -37,6 +40,8 @@ export default {
       axios.get(search.dbDefault).then(function (response) {
         // handle success
         resultado.data = response.data.data;
+      }).catch(error => {
+        console.error(error);
       });
     });
 
@@ -63,6 +68,8 @@ export default {
       axios.get('http://localhost:3000/api/v1/collegiateBodies').then(function (response) {
         // handle success
         resultado.collegiateBodies = response.data.data;
+      }).catch(error => {
+        console.error(error);
       });
     });
 

@@ -1,18 +1,15 @@
 <script setup>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
 import axios from "axios";
-import { defineEmits } from "vue";
+import { defineEmits, reactive } from "vue";
 
-const cuerposColegiados = [
-  {
-    value: "646ea36596524cfb4275f924",
-    label: "Comisión Delegataria del Consejo Superior Universitario",
-  },
-  { value: 2, label: "Comisión Nacional de Carrera Administrativa" },
-  { value: 3, label: "Comité Académico Administrativo Sede Bogotá" },
-  { value: 4, label: "Comité Académico Administrativo Sede Manizales" },
-  { value: 5, label: "Comité Académico Administrativo Sede Medellín" },
-];
+const cuerposColegiados = reactive({ data: [] });
+
+axios.get('http://localhost:3000/api/v1/collegiateBodies').then(response => {
+  cuerposColegiados.data = response.data.data;
+});
+
+console.log(cuerposColegiados);
 
 const tipoDocumentos = [
   { value: 1, label: "Acuerdo" },
@@ -39,19 +36,20 @@ const data = {
   cuerpoCol: "",
 };
 
-// const path = () => emits('Busqueda', 'document?word='+data.palabra+'&type='+data.tipo+'&year='+data.año+
-// '&collegiateBodies='+data.cuerpoCol)
-
 const path = () =>
   emits(
     "Busqueda",
-    "document?&type=" +
-      data.tipo +
-      "&year=" +
-      data.año +
-      "&collegiateBodies=" +
-      data.cuerpoCol
+    "document?words=" +
+    data.palabra +
+    "&words= " +
+    "&type=" +
+    data.tipo +
+    "&year=" +
+    data.año +
+    "&collegiateBodies=" +
+    data.cuerpoCol
   );
+
 </script>
 
 <template>
@@ -69,22 +67,12 @@ const path = () =>
         <form id="AdvanceSearch" @submit.prevent="path">
           <div class="formComponent">
             <label for="nombre">Palabra clave</label>
-            <input
-              v-model="data.palabra"
-              type="text"
-              id="nombre"
-              name="nombre"
-              placeholder="Ingrese la palabra que desea buscar"
-            />
+            <input v-model="data.palabra" type="text" id="nombre" name="nombre"
+              placeholder="Ingrese la palabra que desea buscar" required />
           </div>
           <div class="formComponent">
             <label for="tipoDocumento">Tipo de Documento:</label>
-            <select
-              class="sle"
-              id="tipoDocumento"
-              name="tipoDocumento"
-              v-model="data.tipo"
-            >
+            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="data.tipo" required>
               <option v-for="option in tipoDocumentos" :value="option.value">
                 {{ option.label }}
               </option>
@@ -93,32 +81,20 @@ const path = () =>
 
           <div class="formComponent">
             <label for="año">Año</label>
-            <input
-              v-model="data.año"
-              type="number"
-              id="año"
-              name="año"
-              placeholder="Ingrese su email"
-            />
+            <input v-model="data.año" type="number" id="año" name="año" placeholder="Ingrese su email" min="2000"
+              max="2100" required />
           </div>
           <div class="formComponent">
             <label for="cuerpoCol">Cuerpo Colegiado:</label>
-            <select
-              class="sle"
-              id="cuerpoCol"
-              name="cuerpoCol"
-              v-model="data.cuerpoCol"
-            >
-              <option v-for="option in cuerposColegiados" :value="option.value">
-                {{ option.label }}
+            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="data.cuerpoCol" required>
+              <option v-for="option in cuerposColegiados.data" :value="option._id">
+                {{ option.name }}
               </option>
             </select>
           </div>
 
           <div class="botones">
-            <simpleSearchButton class="wel" v-slot:name-button type="submit"
-              >Buscar</simpleSearchButton
-            >
+            <simpleSearchButton class="wel" v-slot:name-button type="submit">Buscar</simpleSearchButton>
           </div>
         </form>
       </div>
@@ -134,6 +110,7 @@ const path = () =>
   max-width: 350px;
   height: fit-content;
 }
+
 .asformMain .Titulo {
   display: flex;
   flex-direction: column;

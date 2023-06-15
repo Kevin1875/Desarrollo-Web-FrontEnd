@@ -29,7 +29,7 @@ export default {
     function update(palabra) {
       if (palabra) {
         search.dbDefault =
-          "http://localhost:3000/api/v1/document?type=" + palabra;
+          "http://localhost:3000/api/v1/document?words=" + palabra;
       } else {
         search.dbDefault = "http://localhost:3000/api/v1/document?year=2023";
       }
