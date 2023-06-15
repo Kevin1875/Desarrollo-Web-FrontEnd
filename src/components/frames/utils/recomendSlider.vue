@@ -1,19 +1,12 @@
 <template>
   <div class="slider">
     <div class="slide">
-      <div class="rs-container">
+      <div class="rs-container" v-for="item in resultado.data" :key="item._id" @click="redirect(item._id)">
         <h5>
-          Acuerdo 211 de 1945 Consejo Directivo (actual Consejo Superior
-          Universitario)
+          {{ item.title }}
         </h5>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          {{ item.collegiateBodies }}
         </p>
       </div>
     </div>
@@ -120,36 +113,44 @@
   flex-direction: column;
   padding: 20px;
 }
-.rs-container p{
-    text-align: justify;
+
+.rs-container p {
+  text-align: justify;
 }
 
 .slider {
-  width: 100%; /* Ancho del slider */
-  height: 100%; /* Altura del slider */
-  overflow: hidden; /* Oculta los elementos que se salgan del área del slider */
+  width: 100%;
+  /* Ancho del slider */
+  height: 100%;
+  /* Altura del slider */
+  overflow: hidden;
+  /* Oculta los elementos que se salgan del área del slider */
   position: relative;
   background-color: rgb(217, 217, 217, 0.15);
   margin-top: 10px;
   border-radius: 10px;
-  
+
 }
 
 .slide {
-  width: 100%; /* Ancho de cada slide */
-  height: 100%; /* Altura de cada slide */
-  display: none; /* Oculta los slides por defecto */
+  width: 100%;
+  /* Ancho de cada slide */
+  height: 100%;
+  /* Altura de cada slide */
+  display: none;
+  /* Oculta los slides por defecto */
   position: absolute;
   top: 0;
   left: 0;
 }
 
 .slide.active {
-  display: block; /* Muestra el slide activo */
-    display: flex;
+  display: block;
+  /* Muestra el slide activo */
+  display: flex;
   align-items: center;
   justify-content: center;
-  
+
 }
 
 .navigation {

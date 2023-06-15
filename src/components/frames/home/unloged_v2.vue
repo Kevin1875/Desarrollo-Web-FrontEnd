@@ -72,17 +72,7 @@ export default {
         </p>
 
         <div :class="btnSimpleClass">
-          <div v-if="clickOnBottom">
-            <div class="search_input">
-              <input type="text" placeholder="Ingresa tu búsqueda" v-model="inputValue" />
-              <a @click="storeInputValue"><span class="material-symbols-outlined"> search </span></a>
-            </div>
-          </div>
-          <div v-else class="pre-charge">
-            <simpleSearchButton v-slot:name-button>
-              <a @click="simpleClick">Búsqueda Simple</a>
-            </simpleSearchButton>
-          </div>
+          <simpleSearchButton v-slot:name-button> <a href="/simplesearch">Búsqueda Simple</a> </simpleSearchButton>
 
           <simpleSearchButton v-slot:name-button><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton>
         </div>

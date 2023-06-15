@@ -20,6 +20,7 @@ export default {
 
     const resultado = reactive({
       data: [],
+      collegiateBodies: [],
     });
 
     watch(
@@ -58,9 +59,28 @@ export default {
       window.location.href = redirectURL;
     }
 
+    onMounted(() => {
+      axios.get('http://localhost:3000/api/v1/collegiateBodies').then(function (response) {
+        // handle success
+        resultado.collegiateBodies = response.data.data;
+      });
+    });
+
+    function findCollegiateBody(collegiateBodies, collegiateBodyId) {
+      try {
+        const colb = collegiateBodies.find((body) => body._id === collegiateBodyId);
+        return colb.name
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+
+
     return {
       redirect,
       update,
+      findCollegiateBody,
       resultado,
     };
   },
@@ -88,16 +108,12 @@ export default {
             <th class="low-head-table col-2">TIPO</th>
             <th class="low-head-table col-3">CUERPO COLEGIADO</th>
           </tr>
-          <tr
-            v-for="item in resultado.data"
-            class="hovercito"
-            :key="item._id"
-            @click="redirect(item._id)"
-          >
-            <td v-text="item.publicationDate" class="fila-columna"></td>
+          <tr v-for="item in resultado.data" class="hovercito" :key="item._id" @click="redirect(item._id)">
+            <td v-text="item.publicationDate.split('-')[0].trim()" class="fila-columna"></td>
             <td v-text="item.title" class="fila-columna"></td>
             <td v-text="item.type" class="fila-columna"></td>
-            <td v-text="item.collegiateBodies" class="fila-columna"></td>
+            <td v-text="findCollegiateBody(resultado.collegiateBodies, item.collegiateBodies[0])" class="fila-columna">
+            </td>
           </tr>
         </table>
       </div>
@@ -110,6 +126,7 @@ export default {
   margin-left: 30px;
   width: 70%;
 }
+
 .main-as {
   display: flex;
   flex-direction: row;
@@ -135,13 +152,16 @@ export default {
   margin: 0;
   padding-top: 9px;
 }
+
 .main-sTable {
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  margin-left: auto; /* Agregado para centrar horizontalmente */
-  margin-right: auto; /* Agregado para centrar horizontalmente */
+  margin-left: auto;
+  /* Agregado para centrar horizontalmente */
+  margin-right: auto;
+  /* Agregado para centrar horizontalmente */
   cursor: default;
 }
 

@@ -33,8 +33,18 @@ export default {
       });
     });
 
+    function collegiateName(id) {
+      let name;
+      axios.get('http://localhost:3000/api/v1/collegiateBodies/' + id).then(function (response) {
+        console.log(id);
+        name = response.data.name;
+      });
+      return name;
+    }
+
     return {
       resultado,
+      collegiateName,
     };
   },
 };
@@ -59,26 +69,12 @@ export default {
         <th class="low-head-table col-3">CUERPO COLEGIADO</th>
       </tr>
       <tr v-for="item in resultado.data" class="hovercito" :key="item._id">
-        <td
-          v-text="item.publicationDate"
-          class="fila-columna"
-          :data-redirect="'/document/' + item._id"
-        ></td>
-        <td
-          v-text="item.title"
-          class="fila-columna"
-          :data-redirect="'/document/' + item._id"
-        ></td>
-        <td
-          v-text="item.type"
-          class="fila-columna"
-          :data-redirect="'/document/' + item._id"
-        ></td>
-        <td
-          v-text="item.collegiateBodies"
-          class="fila-columna"
-          :data-redirect="'/document/' + item._id"
-        ></td>
+        <td v-text="item.publicationDate" class="fila-columna" :data-redirect="'/document/' + item._id"></td>
+        <td v-text="item.title" class="fila-columna" :data-redirect="'/document/' + item._id"></td>
+        <td v-text="item.type" class="fila-columna" :data-redirect="'/document/' + item._id"></td>
+        <td :text="collegiateName(item.collegiateBodies[0])" class="fila-columna"
+          :data-redirect="'/document/' + item._id">
+        </td>
       </tr>
     </table>
   </div>
@@ -104,13 +100,16 @@ export default {
   margin: 0;
   padding-top: 9px;
 }
+
 .main-sTable {
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  margin-left: auto; /* Agregado para centrar horizontalmente */
-  margin-right: auto; /* Agregado para centrar horizontalmente */
+  margin-left: auto;
+  /* Agregado para centrar horizontalmente */
+  margin-right: auto;
+  /* Agregado para centrar horizontalmente */
   cursor: default;
 }
 

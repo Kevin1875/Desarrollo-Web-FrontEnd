@@ -36,7 +36,8 @@ export default {
     }
 
     const resultado = reactive({
-      data: {},
+      data: [],
+      collegiateBodies: [],
     });
 
     watch(
@@ -63,9 +64,27 @@ export default {
       window.location.href = redirectURL;
     }
 
+    onMounted(() => {
+      axios.get('http://localhost:3000/api/v1/collegiateBodies').then(function (response) {
+        // handle success
+        resultado.collegiateBodies = response.data.data;
+      });
+    });
+
+    function findCollegiateBody(collegiateBodies, collegiateBodyId) {
+      try {
+        const colb = collegiateBodies.find((body) => body._id === collegiateBodyId);
+        return colb.name
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
+
     return {
       redirect,
       update,
+      findCollegiateBody,
       resultado,
       palabra,
     };
@@ -78,17 +97,10 @@ export default {
     <div class="Top">
       <form id="simpleSearch" @submit.prevent="update(palabra)">
         <label for="palabra">Busqueda: </label>
-        <input
-          v-model="palabra"
-          type="text"
-          id="palabra"
-          name="palabra"
-          placeholder="Ingrese la palabra que desea buscar"
-        />
+        <input v-model="palabra" type="text" id="palabra" name="palabra"
+          placeholder="Ingrese la palabra que desea buscar" />
         <div class="botones">
-          <simpleSearchButton class="wel" v-slot:name-button type="submit"
-            >Buscar</simpleSearchButton
-          >
+          <simpleSearchButton class="wel" v-slot:name-button type="submit">Buscar</simpleSearchButton>
         </div>
       </form>
     </div>
@@ -106,19 +118,14 @@ export default {
       <tr>
         <th class="low-head-table col-1">AÑO</th>
         <th class="low-head-table col-2">TITULO</th>
-        <th class="low-head-table col-3">TIPO</th>
-        <th class="low-head-table col-4">CUERPO COLEGIADO</th>
+        <th class="low-head-table col-3">CUERPO COLEGIADO</th>
+        <th class="low-head-table col-4">TIPO</th>
       </tr>
-      <tr
-        v-for="item in resultado.data"
-        class="hovercito"
-        :key="item._id"
-        @click="redirect(item._id)"
-      >
-        <td v-text="item.publicationDate" class="fila-columna"></td>
+      <tr v-for="item in resultado.data" class="hovercito" :key="item._id" @click="redirect(item._id)">
+        <td v-text="item.publicationDate.split('-')[0].trim()" class="fila-columna"></td>
         <td v-text="item.title" class="fila-columna"></td>
+        <td v-text="findCollegiateBody(resultado.collegiateBodies, item.collegiateBodies[0])" class="fila-columna"></td>
         <td v-text="item.type" class="fila-columna"></td>
-        <td v-text="item.collegiateBodies" class="fila-columna"></td>
       </tr>
     </table>
   </div>
@@ -144,6 +151,7 @@ export default {
   margin: 0;
   padding-top: 9px;
 }
+
 .ss {
   width: 60%;
   margin-left: auto;
@@ -175,6 +183,7 @@ export default {
   border: 3px solid;
   border-color: #0500ff;
 }
+
 .Top input:hover {
   outline: none;
   border: 3px solid;
@@ -187,8 +196,10 @@ export default {
   margin-top: 30px;
   flex-direction: column;
   width: 60%;
-  margin-left: auto; /* Agregado para centrar horizontalmente */
-  margin-right: auto; /* Agregado para centrar horizontalmente */
+  margin-left: auto;
+  /* Agregado para centrar horizontalmente */
+  margin-right: auto;
+  /* Agregado para centrar horizontalmente */
 }
 
 .head-table {
