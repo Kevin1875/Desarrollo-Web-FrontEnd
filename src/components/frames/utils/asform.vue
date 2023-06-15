@@ -39,9 +39,8 @@ const data = {
 const path = () =>
   emits(
     "Busqueda",
-    "document?words=" +
+    "document?word=" +
     data.palabra +
-    "&words= " +
     "&type=" +
     data.tipo +
     "&year=" +
