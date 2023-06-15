@@ -4,67 +4,67 @@ import axios from "axios";
 
 export default {
   setup() {
-    // document.addEventListener("DOMContentLoaded", function () {
-    //   var slides = document.querySelectorAll(".slide");
-    //   var dots = document.querySelectorAll(".dot");
-    //   var currentSlide = 0;
-    //   var intervalId;
+    document.addEventListener("DOMContentLoaded", function () {
+      var slides = document.querySelectorAll(".slide");
+      var dots = document.querySelectorAll(".dot");
+      var currentSlide = 0;
+      var intervalId;
 
-    //   // Muestra el slide actual
-    //   function showSlide() {
-    //     // Oculta todos los slides
-    //     for (var i = 0; i < slides.length; i++) {
-    //       slides[i].classList.remove("active");
-    //     }
+      // Muestra el slide actual
+      function showSlide() {
+        // Oculta todos los slides
+        for (var i = 0; i < slides.length; i++) {
+          slides[i].classList.remove("active");
+        }
 
-    //     // Oculta todos los puntos de navegación
-    //     for (var i = 0; i < dots.length; i++) {
-    //       dots[i].classList.remove("active");
-    //     }
+        // Oculta todos los puntos de navegación
+        for (var i = 0; i < dots.length; i++) {
+          dots[i].classList.remove("active");
+        }
 
-    //     // Muestra el slide actual y activa el punto de navegación correspondiente
-    //     slides[currentSlide].classList.add("active");
-    //     dots[currentSlide].classList.add("active");
-    //   }
+        // Muestra el slide actual y activa el punto de navegación correspondiente
+        slides[currentSlide].classList.add("active");
+        dots[currentSlide].classList.add("active");
+      }
 
-    //   // Avanza al siguiente slide
-    //   function nextSlide() {
-    //     currentSlide++;
-    //     if (currentSlide >= slides.length) {
-    //       currentSlide = 0;
-    //     }
-    //     showSlide();
-    //   }
+      // Avanza al siguiente slide
+      function nextSlide() {
+        currentSlide++;
+        if (currentSlide >= slides.length) {
+          currentSlide = 0;
+        }
+        showSlide();
+      }
 
-    //   // Retrocede al slide anterior
-    //   function prevSlide() {
-    //     currentSlide--;
-    //     if (currentSlide < 0) {
-    //       currentSlide = slides.length - 1;
-    //     }
-    //     showSlide();
-    //   }
+      // Retrocede al slide anterior
+      function prevSlide() {
+        currentSlide--;
+        if (currentSlide < 0) {
+          currentSlide = slides.length - 1;
+        }
+        showSlide();
+      }
 
-    //   // Mostrar el slide inicial
-    //   showSlide();
+      // Mostrar el slide inicial
+      showSlide();
 
-    //   // Obtener referencias a los botones de siguiente y anterior
-    //   var nextBtn = document.getElementById("nextBtn");
-    //   var prevBtn = document.getElementById("prevBtn");
+      // Obtener referencias a los botones de siguiente y anterior
+      var nextBtn = document.getElementById("nextBtn");
+      var prevBtn = document.getElementById("prevBtn");
 
-    //   // Escucha los eventos de los botones de siguiente y anterior
-    //   nextBtn.addEventListener("click", function () {
-    //     clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
-    //     nextSlide();
-    //   });
-    //   prevBtn.addEventListener("click", function () {
-    //     clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
-    //     prevSlide();
-    //   });
+      // Escucha los eventos de los botones de siguiente y anterior
+      nextBtn.addEventListener("click", function () {
+        clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
+        nextSlide();
+      });
+      prevBtn.addEventListener("click", function () {
+        clearInterval(intervalId); // Detener el cambio automático al hacer clic manualmente
+        prevSlide();
+      });
 
-    //   // Cambiar automáticamente el slide cada 5 segundos
-    //   intervalId = setInterval(nextSlide, 5000);
-    // });
+      // Cambiar automáticamente el slide cada 5 segundos
+      intervalId = setInterval(nextSlide, 5000);
+    });
 
     const resultado = reactive({
       data: [],
