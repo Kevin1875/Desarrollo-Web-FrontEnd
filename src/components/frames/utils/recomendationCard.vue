@@ -1,7 +1,7 @@
 <template>
   <div class="contCard">
     <h4 class="textCard">
-      {{ props.title }}
+      {{ title }}
     </h4>
   </div>
 </template>
@@ -22,12 +22,11 @@
 import { defineProps } from "vue";
 
 export default {
-  setup() {
-    const props = defineProps({ title: String });
-
-    return {
-      props,
-    };
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
   },
 };
 </script>

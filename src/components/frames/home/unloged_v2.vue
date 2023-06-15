@@ -2,7 +2,6 @@
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
 import slider from "../utils/slider.vue";
 import { ref, onMounted, reactive } from "vue";
-import axios from "axios";
 
 export default {
   components: {
@@ -36,17 +35,7 @@ export default {
       document.addEventListener("click", handleClickOutside);
     });
 
-    let resultado;
-
-    axios
-      .get("http://localhost:3000/api/v1/document?year=2023")
-      .then(function (response) {
-        // handle success
-        resultado = response.data.data;
-      });
-
     return {
-      resultado,
       btnSimpleClass,
       clickOnBottom,
       inputValue,
@@ -85,14 +74,8 @@ export default {
         <div :class="btnSimpleClass">
           <div v-if="clickOnBottom">
             <div class="search_input">
-              <input
-                type="text"
-                placeholder="Ingresa tu búsqueda"
-                v-model="inputValue"
-              />
-              <a @click="storeInputValue"
-                ><span class="material-symbols-outlined"> search </span></a
-              >
+              <input type="text" placeholder="Ingresa tu búsqueda" v-model="inputValue" />
+              <a @click="storeInputValue"><span class="material-symbols-outlined"> search </span></a>
             </div>
           </div>
           <div v-else class="pre-charge">
@@ -101,14 +84,12 @@ export default {
             </simpleSearchButton>
           </div>
 
-          <simpleSearchButton v-slot:name-button
-            ><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton
-          >
+          <simpleSearchButton v-slot:name-button><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton>
         </div>
       </div>
     </div>
     <div class="noticias">
-      <slider :data="resultado" />
+      <slider />
     </div>
   </div>
 </template>
@@ -137,10 +118,12 @@ export default {
   outline: none;
   border-color: #0500ff;
 }
+
 .search_input input:hover {
   outline: none;
   border-color: #0500ff;
 }
+
 .alm {
   max-width: 340px;
   display: flex;
@@ -154,15 +137,18 @@ export default {
   height: 80px;
   justify-content: space-between;
 }
+
 .main-lg {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .tituloz {
   width: 100%;
   font-weight: bold;
 }
+
 .tituloz h1 {
   width: 100%;
   font-weight: bold;

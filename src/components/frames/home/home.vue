@@ -10,7 +10,7 @@ export default {
   },
   setup() {
     const user = reactive({
-      status: true,
+      status: false,
     });
 
     return {

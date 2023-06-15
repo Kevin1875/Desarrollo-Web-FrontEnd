@@ -1,14 +1,23 @@
 <script>
-import { defineProps } from "vue";
-import recomendationCard from "./recomendationCard.vue";
+import axios from "axios";
+import recommendationCard from "./recomendationCard.vue";
+import { reactive, onMounted } from "vue";
 
 export default {
   components: {
-    recomendationCard,
+    recommendationCard,
   },
   setup() {
-    const props = defineProps({ data });
-    console.log(props.data);
+    let resultado = reactive({
+      data: [],
+    });
+
+    onMounted(() => {
+      axios.get("http://localhost:3000/api/v1/document?year=2023").then(function (response) {
+        // handle success
+        resultado.data = Object.values(response.data.data).slice(0, 8);
+      });
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.querySelector(".wrapper");
@@ -111,8 +120,16 @@ export default {
       wrapper.addEventListener("mouseleave", autoPlay);
     });
 
+    function redirect(id) {
+      const redirectURL = "/document/" + id;
+      // Realiza cualquier lógica adicional antes de la redirección si es necesario
+      // Realiza la redirección
+      window.location.href = redirectURL;
+    }
+
     return {
-      props,
+      resultado,
+      redirect,
     };
   },
 };
@@ -121,119 +138,13 @@ export default {
 <template>
   <div class="wrapper">
     <i id="left" class="fa-solid fa-angle-left"></i>
-    <ul class="carousel">
-      <li class="card" v-for="item in props.data">
-        <recomendationCard :title="item.title" />
-      </li>
-    </ul>
+    <div class="carousel">
+      <div class="card" v-for="item in    resultado.data   " :key="item._id" @click="redirect(item._id)">
+        <recommendationCard :title="item.title" />
+      </div>
+    </div>
     <i id="right" class="fa-solid fa-angle-right"></i>
   </div>
 </template>
 
-<style scoped>
-/* Import Google font - Poppins */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-.carousel ul {
-  padding-inline-start: 0px;
-}
-.wrapper {
-  max-width: 1100px;
-  width: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.wrapper i {
-  top: 50%;
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
-  font-size: 1.25rem;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 50px;
-  background: #ffffff69;
-  border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
-  transform: translateY(-50%);
-  transition: transform 0.1s linear;
-}
-.wrapper i:active {
-  transform: translateY(-50%) scale(0.85);
-}
-.wrapper i:first-child {
-  left: 0px;
-}
-.wrapper i:last-child {
-  right: 0px;
-}
-.wrapper .carousel {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% / 4) - 1px);
-  margin: 0 0 -8px 40px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 16px;
-  border-radius: 8px;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  width: auto;
-}
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-.carousel.no-transition {
-  scroll-behavior: auto;
-}
-.carousel.dragging {
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-.carousel.dragging .card {
-  cursor: grab;
-  user-select: none;
-}
-.carousel :where(.card, .img) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.carousel .card {
-  scroll-snap-align: start;
-  height: 200px;
-  width: 200px;
-  list-style: none;
-  background: #d9d9d9;
-  cursor: pointer;
-  flex-direction: column;
-  border-radius: 8px;
-  color: #464646;
-}
-
-.carousel .card h2 {
-  font-weight: 500;
-  font-size: 1.56rem;
-  margin: 30px 0 5px;
-}
-.carousel .card span {
-  color: #6a6d78;
-  font-size: 1.31rem;
-}
-
-@media screen and (max-width: 900px) {
-  .wrapper .carousel {
-    grid-auto-columns: calc((100% / 2) - 10px);
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .wrapper .carousel {
-    grid-auto-columns: 100%;
-  }
-}
-</style>
