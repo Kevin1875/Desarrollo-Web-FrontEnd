@@ -1,27 +1,40 @@
-<script>
+<script setup>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
+import carf from "../utils/carousel.vue";
 import slider from "../utils/slider.vue";
 import recomendationSlider from "../utils/recomendSlider.vue";
 import { ref, onMounted } from "vue";
 
-export default {
-  components: {
-    simpleSearchButton,
-    slider,
-    recomendationSlider,
-  },
-  setup() {
+let btnSimpleClass = ref("alm");
+let clickOnBottom = ref(false);
 
-  }
-}
+const simpleClick = () => {
+  btnSimpleClass.value = "alm2";
+  clickOnBottom.value = true;
+};
 
+const isClickedOutside = ref(false);
+
+
+
+//PASAR
+const prueba = ref('simplesearch?word=csu')
+const inputValue = ref('');
+const storedValue = ref('');
+
+const storeInputValue = () => {
+  storedValue.value = inputValue.value;
+  window.location.href = '/simplesearch?word='+storedValue.value;
+};
 </script>
 
 <template>
   <div class="main-lg">
     <div class="tituloz">
-      <H1>SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
-        RÉGIMEN LEGAL</H1>
+      <H1
+        >SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
+        RÉGIMEN LEGAL</H1
+      >
     </div>
     <div class="m1">
       <div class="messagge-main">
@@ -41,9 +54,23 @@ export default {
         </p>
 
         <div :class="btnSimpleClass">
-          <simpleSearchButton v-slot:name-button> <a href="/simplesearch">Búsqueda Simple</a> </simpleSearchButton>
+          <div v-if="clickOnBottom">
+            <div class="search_input">
+              <input type="text" placeholder="Ingresa tu busqueda" v-model="inputValue"/>
+              <a @click="storeInputValue"
+                ><span class="material-symbols-outlined"> search </span></a
+              >
+            </div>
+          </div>
+          <div v-else class="pre-charge">
+            <simpleSearchButton v-slot:name-button>
+              <a @click="simpleClick">Busqueda Simple</a>
+            </simpleSearchButton>
+          </div>
 
-          <simpleSearchButton v-slot:name-button><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton>
+          <simpleSearchButton v-slot:name-button
+            ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton
+          >
         </div>
       </div>
       <div class="recomendaciones">
@@ -51,7 +78,7 @@ export default {
         <recomendationSlider />
       </div>
     </div>
-    <div class="noticias">
+    <div class="aaaaa">
       <slider />
     </div>
   </div>
@@ -81,12 +108,10 @@ export default {
   outline: none;
   border-color: #0500ff;
 }
-
 .search_input input:hover {
   outline: none;
   border-color: #0500ff;
 }
-
 .alm {
   max-width: 340px;
   display: flex;
@@ -100,25 +125,22 @@ export default {
   height: 80px;
   justify-content: space-between;
 }
-
 .main-lg {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .tituloz {
   width: 100%;
   font-weight: bold;
 }
-
 .tituloz h1 {
   width: 100%;
   font-weight: bold;
   color: aliceblue;
 }
 
-.noticias {
+.aaaaa {
   margin-top: 160px;
   background-color: rgb(217, 217, 217, 0.15);
   padding: 30px 10px;
@@ -189,11 +211,11 @@ export default {
 .material-symbols-outlined:hover {
   cursor: pointer;
   background-color: rgba(128, 128, 128, 0.452);
-  color: rgb(9, 176, 218);
+    color: rgb(9, 176, 218);
   text-decoration: none;
 }
 
-a:hover {
+a:hover{
   text-decoration: none;
 }
 </style>

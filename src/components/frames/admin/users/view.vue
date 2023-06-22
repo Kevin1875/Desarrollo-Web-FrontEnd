@@ -93,10 +93,10 @@ let esconder = () => {
 
     <div :class="cambio()">
       <a href="/adminpanel/user/create"
-        ><div class="item-d">Crear</div>
+        ><div class="item-d">Crear Usuario</div>
       </a>
-      <a href="/adminpanel/user/delete"
-        ><div class="item-d">Eliminar</div>
+      <a href="/adminpanel/user/modify"
+        ><div class="item-d">Modificar Usuario</div>
       </a>
     </div>
   </div>

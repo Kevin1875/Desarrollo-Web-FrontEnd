@@ -96,9 +96,6 @@ let esconder = () => {
       <a href="/adminpanel/collegebody/modify"
         ><div class="item-d">Modificar</div>
       </a>
-      <a href="/adminpanel/collegebody/validate"
-        ><div class="item-d">Eliminar</div>
-      </a>
     </div>
   </div>
 

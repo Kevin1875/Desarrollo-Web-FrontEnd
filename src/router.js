@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import home from "./components/frames/home/home.vue";
-import unloged from "./components/frames/home/unloged_v2.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,7 +14,7 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
-      component: () => import("./components/frames/auth/login.vue")
+      component: () => import("./components/frames/auth/login.vue"),
     },
     {
       path: "/simplesearch",
@@ -42,11 +41,6 @@ const router = createRouter({
 
     //publication routes
     {
-      path: "/adminpanel/publication",
-      name: "Publications",
-      component: () => import("./components/frames/admin/documents/view.vue"),
-    },
-    {
       path: "/adminpanel/publication/create",
       name: "Create Document",
       component: () => import("./components/frames/admin/documents/create.vue"),
@@ -71,6 +65,12 @@ const router = createRouter({
       component: () => import("./components/frames/admin/bodies/create.vue"),
     },
 
+    {
+      path: "/adminpanel/collegebody/modify",
+      name: "BB Modify",
+      component: () => import("./components/frames/admin/bodies/modify.vue"),
+    },
+
     //----------------------------------------
 
     // USERS ROUTES
@@ -85,9 +85,9 @@ const router = createRouter({
       component: () => import("./components/frames/admin/users/create.vue"),
     },
     {
-      path: "/adminpanel/user/delete",
-      name: "USER delete",
-      component: () => import("./components/frames/admin/users/delete.vue"),
+      path: "/adminpanel/user/modify",
+      name: "USER modify",
+      component: () => import("./components/frames/admin/users/modify.vue"),
     },
     //DOCUMENT ROUTES
     {

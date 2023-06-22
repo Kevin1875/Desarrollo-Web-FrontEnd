@@ -6,7 +6,10 @@ const nombre = ref(null);
 const correo = ref(null);
 const contraseña = ref(null);
 const contraseña_confirmada = ref(null);
-const prefencias = ref([]);
+const show_updater = ref(false);
+const show_notfoundmail = ref(false);
+const preferencias = ref([]);
+const succes_send = ref(false)
 
 const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);
@@ -23,68 +26,33 @@ const entry_date_formated = ref(null);
 
 const fileInput = ref(null);
 
-const tipoDocumentos = [
-  { value: 1, label: "Acuerdo" },
-  { value: 1, label: "Circular" },
-  { value: 1, label: "Circular Conjunta" },
-  { value: 1, label: "Concepto" },
-  { value: 1, label: "Convención Colectiva" },
-  { value: 1, label: "Decreto" },
-  { value: 1, label: "Documento de Relatoría" },
-  { value: 1, label: "Instructivo" },
-  { value: 1, label: "Ley" },
-  { value: 1, label: "Linea Jurisprudencial" },
-  { value: 1, label: "Nota" },
-  { value: 1, label: "Resolución" },
-  { value: 1, label: "Sentencia" },
-];
-
-const cuerposColegiados = [
-  {
-    value: 1,
-    label: "Comisión Delegataria del Consejo Superior Universitario",
-  },
-  { value: 1, label: "Comisión Nacional de Carrera Administrativa" },
-  { value: 1, label: "Comité Académico Administrativo Sede Bogotá" },
-  { value: 1, label: "Comité Académico Administrativo Sede Manizales" },
-  { value: 1, label: "Comité Académico Administrativo Sede Medellín" },
-];
-
 //FUNCIONES
 
 function enviarDatos() {
-  // Obtener los valores seleccionados de los selects
-  var tipoDocumento = document.getElementById("documentType").value;
-  var autoridadFirma = document.getElementById("autoritySignature").value;
+  const preferences = preferencias.value.map(({ valor }) => valor);
+  const url = "http://localhost:3000/api/v1/users/" + id_final.value;
+  console.log(preferences);
 
-  // Obtener el valor del campo de texto
-  var comentarios = document.getElementById("comments").value;
+  axios
+    .patch(url, { preferences: preferences })
+    .then((response) => {
+      console.log("Solicitud PATCH exitosa");
+      succes_send.value = true;
+      
 
-  // Crear el objeto con los datos recopilados
-  var datos = {
-    tipoDocumento: tipoDocumento,
-    autoridadFirma: autoridadFirma,
-    comentarios: comentarios,
-  };
-
-  // Mostrar el objeto en la consola (para verificar)
-  console.log(datos);
-
-  // Aquí puedes hacer lo que desees con el objeto de datos, como enviarlo a un servidor o procesarlo de alguna manera.
+    })
+    .catch((error) => {
+      console.error("Error en la solicitud PATCH");
+      console.error(error);
+    });
 }
+
 function handleFileChange(event) {
   document.value = event.target.files[0];
 }
 
-function submitForm() {
-  //console.log(document.value);
-  //console.log(title.value);
-  //console.log(authorities.value);
-  pub_date_formated.value = formatDate(pub_date.value);
-  exp_date_formated.value = formatDate(exp_date.value);
-  entry_date_formated.value = formatDate(entry_date.value);
-
-  sentDocument();
+function buscarUsuario() {
+  getUser();
 }
 
 function formatDate(value) {
@@ -129,20 +97,46 @@ function sentDocument() {
     });
 }
 
-function handleButtonClick() {
-  fileInput.value.click();
-}
-function handleFileSelect(event) {
-  //const file = event.target.files[0];
-  //this.selectedFileName = file ? file.name : null;
+const idCorrespondiente = ref(null);
+const id_final = ref(null);
+const correo_pre = ref(null);
+function getUser() {
+  axios
+    .get("http://localhost:3000/api/v1/users")
+    .then((response) => {
+      console.log(response.data.data);
+      for (let i = 0; i < response.data.data.length; i++) {
+        if (response.data.data[i].email === correo_pre.value) {
+          idCorrespondiente.value = response.data.data[i]._id;
+          nombre.value = response.data.data[i].name;
+          correo.value = response.data.data[i].email;
 
-  document.value = event.target.files[0];
-  selectedFileName.value = document.value ? document.value.name : "pglo";
-  console.log(selectedFileName.value);
-  // Aquí puedes hacer algo con el archivo seleccionado
+          preferencias.value = response.data.data[i].preferences.map(
+            (valor) => {
+              return { valor };
+            }
+          );
+          show_notfoundmail.value = false;
+          break; // Detener la búsqueda una vez encontrado el correo
+        }
+      }
+      if (idCorrespondiente.value != null) {
+        id_final.value = idCorrespondiente.value;
+        idCorrespondiente.value = null;
+        show_updater.value = true;
+      } else {
+        show_notfoundmail.value = true;
+
+        show_updater.value = false;
+        console.log("no se encontró un usuario asociado al correo");
+      }
+    })
+    .catch((error) => {
+      // Maneja el error aquí
+      console.error(error);
+    });
 }
 
-const preferencias = ref([{ valor: "" }, { valor: "" }, { valor: "" }]);
 
 function agregarPreferencia() {
   preferencias.value.push({ valor: "" });
@@ -161,86 +155,121 @@ function eliminarPreferencia(index) {
       </div>
       <div class="subtittle-cr">
         <h3>GESTIÓN DE USUARIOS</h3>
-        <div class="status">CREAR USUARIO</div>
+        <div class="status">MODIFICAR USUARIO</div>
         <a href="/adminpanel/user">
           <span class="material-symbols-outlined btn"> chevron_left </span>
         </a>
       </div>
     </div>
+    <div class="xda" style="margin-top: 50px">
+      <div style="margin: 0px 30px 20px 30px">
+        <Transition name="fade">
+          <div v-if="show_notfoundmail" class="notfoundmail fade-div">
+            <p>No se encontró un usuario asociado al email</p>
+          </div>
+        </Transition>
 
-    <div style="margin-top: 50px">
-      <form @submit.prevent="submitForm">
-        <div class="main-form">
-          <div class="cont-1">
-            <label>Nombre completo: </label>
-            <input
-              type="text"
-              v-model="nombre"
-              placeholder="Ingrese el título"
-              class="input_title"
-            />
+        <form @submit.prevent="buscarUsuario">
+          <div class="main-form">
+            <div class="cont-1">
+              <label>Ingrese el correo del usuario a modificar: </label>
+              <input
+                type="text"
+                v-model="correo_pre"
+                placeholder="Correo"
+                class="input_title"
+              />
+              <div style="width: 100%">
+                <input type="submit" value="Buscar" class="btn-submit" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
 
-            <label>Correo: </label>
-            <input
-              type="text"
-              v-model="correo"
-              placeholder="Ingrese el título"
-              class="input_title"
-            />
-
-            <label>Contraseña: </label>
-            <input
-              type="password"
-              v-model="contraseña"
-              placeholder="Ingrese el título"
-              class="input_title"
-            />
-
-            <label>Confirmar contraseña: </label>
-            <input
-              type="password"
-              v-model="contraseña_confirmada"
-              placeholder="Ingrese el título"
-              class="input_title"
-            />
-
-            <div>
-              <label>Preferencias:</label>
-              <div
-                v-for="(preferencia, index) in preferencias"
-                :key="index"
-                class="pref-class"
-              >
-                <input
-                  type="text"
-                  v-model="preferencia.valor"
-                  placeholder="ingrese su preferencia"
-                />
-                <button
-                  @click="eliminarPreferencia(index)"
-                  class="del-preff-class"
+      <div v-if="show_updater">
+        <form @submit.prevent="enviarDatos">
+          <div class="main-form">
+            <div class="cont-1">
+              <div class="info">
+                Correo: {{ correo }}
+                <br />
+                Nombre: {{ nombre }}
+              </div>
+              <div style="margin-bottom: 20px">
+                <label>Preferencias:</label>
+                <div
+                  v-for="(preferencia, index) in preferencias"
+                  :key="index"
+                  class="pref-class"
                 >
-                  x
+                  <input
+                    type="text"
+                    v-model="preferencia.valor"
+                    placeholder="ingrese su preferencia"
+                  />
+                  <button
+                    type="button"
+                    @click="eliminarPreferencia(index)"
+                    class="del-preff-class"
+                  >
+                    x
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  @click="agregarPreferencia"
+                  class="agg-preff-class"
+                >
+                  +
                 </button>
               </div>
-              <button @click="agregarPreferencia" class="agg-preff-class">
-                +
-              </button>
-            </div>
 
-            <input type="submit" value="Enviar" class="btn-submit" />
+              <input type="submit" value="Modificar" class="btn-submit" />
+            </div>
           </div>
+        </form>
+        <div class="succesmodify" v-if="succes_send">
+          se han modificado las preferencias 🫡
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.succesmodify{
+  background-color: rgba(50, 205, 50, 0.452);
+  color: white;
+  margin-top: 10px;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+.notfoundmail {
+  background-color: rgba(165, 42, 42, 0.678);
+  color: white;
+  border-radius: 10px 10px 0 0;
+  margin-bottom: -15px;
+  padding: 10px 0 10px 0;
+  text-align: center;
+}
+.xda {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.info {
+  background-color: rgb(0, 56, 78);
+  display: flex;
+  justify-content: left;
+  border-radius: 10px;
+  padding: 0 5px;
+  margin-bottom: 10px;
+}
 .btn-submit {
-  margin-top: 20px;
-  width: 100%;
-  height: 50px;
+  width: 80px;
+  height: 30px;
   border: none;
   color: white;
   border-radius: 5px;
@@ -251,8 +280,6 @@ function eliminarPreferencia(index) {
 }
 
 .btn-submit:hover {
-  width: 102%;
-  height: 50px;
   border: none;
   color: white;
   border-radius: 5px;
@@ -261,10 +288,10 @@ function eliminarPreferencia(index) {
   background-color: #223a73;
 }
 .cont-1 {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: #284380;
   border-radius: 15px;
   padding: 20px;
-  width: 500px;
+  width: 400px;
   height: fit-content;
   display: flex;
   flex-direction: column;

@@ -1,5 +1,25 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const id = computed(() => store.state.id);
+const isAdmin = true;
+
+const nombre = ref("Carlos");
+const mostrarMenu = ref(false);
+const text = ref(nombre.value)
+
+function changeText() {
+  text.value = "Cerrar Sesión";
+}
+function resetText() {
+  text.value = nombre.value;
+}
+
+console.log("El id es:", id.value);
+
 let varLogin = ref("Login");
 let isScroll = ref(true);
 
@@ -30,18 +50,39 @@ window.addEventListener("scroll", function () {
     <nav class="nav">
       <ul class="ul">
         <li class="li"><a href="/">Inicio</a></li>
-        <li class="li"><a href="/misdocumentos">Mis Documentos</a></li>
-        <li class="li"><a href="/adminpanel">Administrar</a></li>
-
+        <li v-if="id != null" class="li">
+          <a href="/misdocumentos">Mis Documentos</a>
+        </li>
+        <li v-if="isAdmin" class="li"><a href="/adminpanel">Administrar</a></li>
+        <li v-if="id != null" class="li"><a href="/adminpanel">Ajustes</a></li>
         <li class="li"><a href="https://unal.edu.co/">Ayuda</a></li>
       </ul>
     </nav>
     <!--
             <div class="login"><div class="bt-login"><a @:click="clickcito">{{ varLogin }}</a> </div></div>
         -->
-        <div class="login"><div class="bt-login"><a href="/login" @click="loginAction">Login</a> </div></div>
 
-    </header>
+    <div
+      v-if="id"
+      class="profile"
+      @mouseover="changeText"
+      @mouseleave="resetText"
+    >
+      {{text}}
+    </div>
+    <!--
+      <span class="material-symbols-outlined" style="margin-right: 10px">
+        person
+      </span>
+      -->
+    <div v-else>
+      <div class="login">
+        <div class="bt-login">
+          <a href="/login" @click="loginAction">Login</a>
+        </div>
+      </div>
+    </div>
+  </header>
 </template>
 
 <style scoped>
@@ -49,6 +90,26 @@ window.addEventListener("scroll", function () {
 * {
   margin: 0;
   padding: 0;
+}
+.profile {
+  border-radius: 20px;
+  height: fit-content;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.profile:hover {
+  background-color: white;
+  color: #031448;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .headerr {
@@ -58,6 +119,7 @@ window.addEventListener("scroll", function () {
   font-size: 16;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 0 5%;
   position: fixed;
@@ -72,6 +134,7 @@ window.addEventListener("scroll", function () {
   font-size: 16;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: 0 5%;
   position: fixed;
@@ -143,5 +206,13 @@ li a:hover {
   background-color: #ffffff;
   color: #031448;
   font-weight: 800;
+}
+
+.hide {
+  display: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 </style>

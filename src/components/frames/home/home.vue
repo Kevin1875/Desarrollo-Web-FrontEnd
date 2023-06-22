@@ -1,26 +1,41 @@
-<script>
-import loged from "../../frames/home/loged.vue";
-import unloged from "../../frames/home/unloged_v2.vue";
-import { reactive } from "vue";
+<script setup>
+import loged from "./loged.vue";
+import unloged from "./unloged_v2.vue";
+import { ref, onMounted, watch } from 'vue';
 
-export default {
-  components: {
-    loged,
-    unloged,
-  },
-  setup() {
-    const user = reactive({
-      status: true,
-    });
+function showLoged() {
+  if (frameActive.value) {
+    return { "": true, hide: false };
+  } else {
+    return { "": false, hide: true };
+  }
+}
 
-    return {
-      user,
-    };
-  },
+function showUnloged() {
+  if (!frameActive.value) {
+    return { "": true, hide: false };
+  } else {
+    return { "": false, hide: true };
+  }
+}
+
+let frameActive = ref(true);
+
+let loginAction = () => {
+  frameActive.value = !frameActive.value;
 };
+
+props: ['mensaje']
+
 </script>
 
 <template>
-  <loged v-if="user.status" />
-  <unloged v-else />
+  <loged :class="showLoged()" />
+  <unloged :class="showUnloged()" />
 </template>
+
+<style scoped>
+.hide {
+  display: none;
+}
+</style>

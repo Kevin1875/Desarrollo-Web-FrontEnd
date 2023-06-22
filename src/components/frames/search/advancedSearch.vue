@@ -14,8 +14,13 @@ export default {
       dbDefault: "http://localhost:3000/api/v1/document?year=2023",
     });
 
+    function hide (){
+      return 'hide'
+    }
+
     function update(path) {
       search.dbDefault = "http://localhost:3000/api/v1/" + path;
+
     }
 
     const resultado = reactive({
@@ -97,7 +102,7 @@ export default {
 <template>
   <div class="main-as">
     <asform @busqueda="update" />
-    <div class="container-table">
+    <div class="hide" :class="hide">
       <div class="main-sTable">
         <div class="top-tittle">
           <p>TOTAL DE {{ resultado.data.length }} REGISTROS ENCONTRADOS</p>
@@ -129,6 +134,10 @@ export default {
 </template>
 
 <style scoped>
+
+.hide{
+  display: none;
+}
 .container-table {
   margin-left: 30px;
   width: 70%;

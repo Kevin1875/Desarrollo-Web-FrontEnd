@@ -11,11 +11,10 @@ import userPanel from "./users/view.vue";
     </div>
     <div class="content-ap">
       <div class="container-ap">
-        <a href="/adminpanel/publication">
-          <div class="tittle-container-ap">GESTIÓN DE PUBLICACIONES</div>
+        <a href="/adminpanel/publication/create">
+          <div class="tittle-container-ap">CREAR PUBLICACIONES</div>
           <div class="text-container-ap">
-            Solicitar publicación, solicitar cambios en publicación y validación
-            de documentos
+            Crea publicaciones desde el cuerpo colegiado al que pertenezcas
           </div>
         </a>
       </div>

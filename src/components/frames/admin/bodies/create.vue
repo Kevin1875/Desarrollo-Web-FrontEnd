@@ -2,137 +2,81 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
-const document = ref(null);
+const nombre = ref(null);
+const correo = ref(null);
+const contraseña = ref(null);
+const contraseña_confirmada = ref(null);
+const correos_admin = ref([{ valor: "" }]);
+const lista_ca = ref([null]);
+const id_admins = ref([]);
+const pref = ref([]);
+let pref2 = [];
+
 const selectedFileName = ref("Selecciona el documento");
-const title = ref(null);
-const authorities = ref([]);
-const documentType = ref(null);
-
-const pub_date = ref(null);
-const exp_date = ref(null);
-const entry_date = ref(null);
-
-const pub_date_formated = ref(null);
-const exp_date_formated = ref(null);
-const entry_date_formated = ref(null);
-
-const fileInput = ref(null);
-
-const tipoDocumentos = [
-  { value: 1, label: "Acuerdo" },
-  { value: 1, label: "Circular" },
-  { value: 1, label: "Circular Conjunta" },
-  { value: 1, label: "Concepto" },
-  { value: 1, label: "Convención Colectiva" },
-  { value: 1, label: "Decreto" },
-  { value: 1, label: "Documento de Relatoría" },
-  { value: 1, label: "Instructivo" },
-  { value: 1, label: "Ley" },
-  { value: 1, label: "Linea Jurisprudencial" },
-  { value: 1, label: "Nota" },
-  { value: 1, label: "Resolución" },
-  { value: 1, label: "Sentencia" },
-];
-
-const cuerposColegiados = [
-  {
-    value: 1,
-    label: "Comisión Delegataria del Consejo Superior Universitario",
-  },
-  { value: 1, label: "Comisión Nacional de Carrera Administrativa" },
-  { value: 1, label: "Comité Académico Administrativo Sede Bogotá" },
-  { value: 1, label: "Comité Académico Administrativo Sede Manizales" },
-  { value: 1, label: "Comité Académico Administrativo Sede Medellín" },
-];
 
 //FUNCIONES
 
-function enviarDatos() {
-  // Obtener los valores seleccionados de los selects
-  var tipoDocumento = document.getElementById("documentType").value;
-  var autoridadFirma = document.getElementById("autoritySignature").value;
-
-  // Obtener el valor del campo de texto
-  var comentarios = document.getElementById("comments").value;
-
-  // Crear el objeto con los datos recopilados
-  var datos = {
-    tipoDocumento: tipoDocumento,
-    autoridadFirma: autoridadFirma,
-    comentarios: comentarios,
-  };
-
-  // Mostrar el objeto en la consola (para verificar)
-  console.log(datos);
-
-  // Aquí puedes hacer lo que desees con el objeto de datos, como enviarlo a un servidor o procesarlo de alguna manera.
-}
 function handleFileChange(event) {
   document.value = event.target.files[0];
 }
 
 function submitForm() {
-  //console.log(document.value);
-  //console.log(title.value);
-  //console.log(authorities.value);
-  pub_date_formated.value = formatDate(pub_date.value);
-  exp_date_formated.value = formatDate(exp_date.value);
-  entry_date_formated.value = formatDate(entry_date.value);
-
+  let lista = [];
+  for (var i = 0; i < preferencias.value.length; i++) {
+    lista.push(preferencias.value[i].valor);
+  }
+  pref2 = lista;
+  //AQUI PODEMOS USAR LOS VALIDADORES
   sentDocument();
 }
 
-function formatDate(value) {
-  if (!value) return ""; // Si no hay fecha, mostrar campo vacío
-
-  const date = new Date(value);
-  const day = date.getDate().toString().padStart(2, "0"); // Obtener día y asegurar dos dígitos
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Obtener mes y asegurar dos dígitos
-  const year = date.getFullYear().toString(); // Obtener año
-
-  return `${day}/${month}/${year}`;
+function getUsers() {
+  lista_ca.value = Object.values(correos_admin.value.map(({ valor }) => valor));
+  axios
+    .get("http://localhost:3000/api/v1/users")
+    .then((response) => {
+      console.log(response.data.data)
+      for (let i = 0; i < response.data.data.length; i++) {
+        console.log("-");
+        for (let j = 0; j < lista_ca.value.length; j++) {
+          if (response.data.data[i].email === lista_ca.value[j]) {
+            id_admins.value.push(response.data.data[i]._id);
+          }
+        }
+      }
+      sentDocument();
+    })
+    .catch((error) => {
+      // Maneja el error aquí
+      console.error(error);
+    });
 }
 
 function sentDocument() {
-  const formData = new FormData();
-  formData.append("Doc", document.value);
-  formData.append("title", title.value);
-  formData.append("type", documentType.value);
-  formData.append("collegiateBodies", "646ea36596524cfb4275f924");
-  formData.append("publicationDate", pub_date_formated.value);
-  formData.append("entryIntoForce", exp_date_formated.value);
-  formData.append("expeditionDate", entry_date_formated.value);
+  const idList = Object.values(id_admins.value);
 
   axios
-    .post("http://localhost:3000/api/v1/document", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // Importante: establece el encabezado 'Content-Type' como 'multipart/form-data'
-      },
+    .post("http://localhost:3000/api/v1/collegiateBodies", {
+      name: nombre.value,
+      admins: idList,
     })
     .then((response) => {
       console.log("Melo");
-
       console.log(response.data);
-      // Realiza las acciones necesarias con la respuesta del servidor
     })
     .catch((error) => {
-      console.log("Melont");
+      console.log("Fail 😵‍💫");
       console.error(error);
       // Maneja el error en caso de que la solicitud falle
     });
 }
 
-function handleButtonClick() {
-  fileInput.value.click();
+function agregarPreferencia() {
+  correos_admin.value.push({ valor: "" });
 }
-function handleFileSelect(event) {
-  //const file = event.target.files[0];
-  //this.selectedFileName = file ? file.name : null;
 
-  document.value = event.target.files[0];
-  selectedFileName.value = document.value ? document.value.name : "pglo";
-  console.log(selectedFileName.value);
-  // Aquí puedes hacer algo con el archivo seleccionado
+function eliminarPreferencia(index) {
+  correos_admin.value.splice(index, 1);
 }
 </script>
 
@@ -144,7 +88,7 @@ function handleFileSelect(event) {
       </div>
       <div class="subtittle-cr">
         <h3>GESTIÓN DE CUERPOS COLEGIADOS</h3>
-        <div class="status">CREAR CUERPO</div>
+        <div class="status">CREAR</div>
         <a href="/adminpanel/collegebody">
           <span class="material-symbols-outlined btn"> chevron_left </span>
         </a>
@@ -152,107 +96,47 @@ function handleFileSelect(event) {
     </div>
 
     <div style="margin-top: 50px">
-      <form @submit.prevent="submitForm">
+      <form @submit.prevent="getUsers">
         <div class="main-form">
           <div class="cont-1">
-            <label>Nombre del cuerpo colegiado : </label>
+            <label>Nombre del Cuerpo Colegiado: </label>
             <input
               type="text"
-              v-model="title"
-              placeholder="Ingrese el título"
+              v-model="nombre"
+              placeholder="Ingrese el nombre"
               class="input_title"
             />
-
-            <label>Correo del director: </label>
-            <input
-              type="text"
-              v-model="title"
-              placeholder="Ingrese el título"
-              class="input_title"
-            />
-
-            <label for="documentType">Tipo de documento: </label>
-            <select
-              class="sle"
-              v-model="documentType"
-              id="documentType"
-              name="ijueplatano"
-            >
-              <option v-for="option in tipoDocumentos" :value="option.label">
-                {{ option.label }}
-              </option>
-            </select>
 
             <div>
-              <label
-                >Seleccione el cuerpo colegiado que firmará el documento:
-              </label>
-
-              <label for="option1">
+              <label>Agrega el correo de los administradores:</label>
+              <div
+                v-for="(correo, index) in correos_admin"
+                :key="index"
+                class="pref-class"
+              >
                 <input
-                  v-model="authorities"
-                  type="checkbox"
-                  id="option1"
-                  name="options"
-                  value="646ea36596524cfb4275f924"
+                  type="email"
+                  v-model="correo.valor"
+                  placeholder="Ingrese el correo"
                 />
-                Consejo De Paros
-              </label>
-              <br />
-              <label for="option2">
-                <input
-                  v-model="authorities"
-                  type="checkbox"
-                  id="option2"
-                  name="options"
-                  value="646eb620be39ca3f71662ab3"
-                />
-                Consejo De Minaas
-              </label>
-            </div>
-
-            <div class="file-input">
-              <input
-                type="file"
-                ref="fileInput"
-                @change="handleFileSelect"
-                for="file-1"
-              />
-              <button @click="handleButtonClick" type="button" id="file-1">
-                {{ selectedFileName }}
+                <button
+                  @click="eliminarPreferencia(index)"
+                  class="del-preff-class"
+                  type="button"
+                >
+                  x
+                </button>
+              </div>
+              <button
+                type="button"
+                @click="agregarPreferencia"
+                class="agg-preff-class"
+              >
+                +
               </button>
             </div>
-          </div>
-          <div>
-            <div class="cont-2">
-              <label for="fecha">Fecha de publicación:</label>
-              <input
-                v-model="pub_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
 
-              <label for="fecha">Fecha de expedición:</label>
-              <input
-                v-model="exp_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
-
-              <label for="fecha">Fecha de entrada en vigencia:</label>
-              <input
-                v-model="entry_date"
-                class="input_date"
-                type="date"
-                id="fecha"
-                name="fecha"
-              />
-            </div>
-            <input type="submit" value="Enviar" class="btn-submit" />
+            <input type="submit" value="Crear" class="btn-submit" />
           </div>
         </div>
       </form>
@@ -262,6 +146,7 @@ function handleFileSelect(event) {
 
 <style scoped>
 .btn-submit {
+  margin-top: 20px;
   width: 100%;
   height: 50px;
   border: none;
@@ -323,68 +208,10 @@ function handleFileSelect(event) {
   font-weight: 500;
 }
 
-.cont-2 {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 15px;
-  padding: 20px;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0px 0 20px 0;
-}
-
-.cont-2 .input_date {
-  background-color: #223a73;
-  width: 200px;
-  padding: 5px 10px;
-  outline: solid 2px gray;
-  border: none;
-  border-radius: 10px;
-  color: aliceblue;
-  transition: all 0.7s ease;
-  margin: -5px 0 20px 0;
-}
-
-.cont-2 .input_date:hover {
-  outline: solid 2px deepskyblue;
-}
-
-.cont-2 .input_date::-webkit-calendar-picker-indicator {
-  filter: invert(1); /* Invierte los colores del icono */
-}
-
 .main-form {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-}
-
-.comment-cr textarea {
-  background-color: #223a73;
-  border: none;
-  min-height: 100px;
-  width: 100%;
-  border-radius: 10px;
-  color: white;
-  transition: all 0.3s ease;
-  border: solid 2px gray;
-  min-height: 200px;
-}
-
-.comment-cr textarea:focus {
-  border: solid 2px rgb(151, 151, 151);
-  min-height: 100px;
-  width: 100%;
-  outline: none;
-  min-height: 200px;
-}
-
-.comment-cr label {
-  font-weight: 400;
-  font-size: 15px;
-  padding-left: 10px;
-  margin: 0;
 }
 
 .top-cr {
@@ -424,34 +251,6 @@ function handleFileSelect(event) {
   align-items: center;
 }
 
-.subtittle-cr .btn-atras {
-  height: 35px;
-  width: 35px;
-  background-color: aliceblue;
-  border-radius: 50px;
-}
-
-.form-cr {
-  max-width: 700px;
-  background-color: rgba(255, 255, 255, 0.075);
-  margin: 20px 0;
-  padding: 20px;
-  display: flex;
-  border-radius: 10px;
-  flex-direction: column;
-}
-
-.docview-cr {
-  height: 100vh;
-  width: 100%;
-  background-color: rgb(24, 43, 95);
-}
-
-.comments-cr {
-  height: 100px;
-  background-color: aquamarine;
-}
-
 a {
   text-decoration: none;
   color: inherit;
@@ -460,77 +259,6 @@ a {
 a:hover {
   text-decoration: none;
   color: inherit;
-}
-
-/*ESTILOS FORM TIPO DE DOCUMENTO */
-.formComponent {
-  padding: 5px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.formComponent label {
-  font-weight: 400;
-  font-size: 15px;
-  padding-left: 10px;
-  margin: 0;
-}
-
-.formComponent input {
-  width: 100%;
-  border: 2px solid;
-  border-color: gray;
-  border-radius: 10px;
-  background-color: transparent;
-  color: white;
-  transition: all 0.7s ease;
-  height: 40px;
-  padding-left: 20px;
-}
-
-.formComponent input:hover {
-  outline: none;
-  border: 2px solid;
-  border-color: deepskyblue;
-}
-
-.formComponent input:focus {
-  outline: none;
-  border: 2px solid;
-  border-color: deepskyblue;
-}
-
-.formComponent input::placeholder {
-  font-weight: 500;
-}
-
-.sle {
-  background-color: #223a73;
-  color: white;
-  transition: all 2s ease;
-  height: 40px;
-  border-radius: 10px;
-  border: 2px solid;
-  border-color: gray;
-  margin-top: -5px;
-  margin-bottom: 20px;
-}
-
-.sle:focus {
-  background-color: #223a73;
-  color: white;
-  border: 2px solid;
-  border-color: gray;
-  outline: none;
-}
-
-.sle:focus-visible {
-  background-color: #223a73;
-  color: white;
-  border: 2px solid;
-  border-color: gray;
-  outline: none;
-  border-color: deepskyblue;
 }
 
 /* ESTILO DE FLECHA ATRAS */
@@ -551,31 +279,78 @@ a:hover {
   width: 33px;
 }
 
-/*ESTILOS DEL DROP ZONE AGARRATE DE LA SILLA MANO*/
-.file-input {
-  display: inline-block;
+.pref-class {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0;
+  align-items: center;
 }
 
-.file-input input[type="file"] {
-  display: none;
+.pref-class input {
+  width: 200px;
+  border: 2px solid;
+  border-color: gray;
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  transition: all 0.7s ease;
+  height: 40px;
+  padding-left: 20px;
 }
 
-.file-input button {
-  background-color: #223a73;
-  width: 100%;
-  height: 50px;
-  color: #fff;
-  padding: 10px 20px;
+.pref-class input:hover {
+  outline: none;
+  border: 2px solid;
+  border-color: deepskyblue;
+}
+
+.pref-class input:focus {
+  outline: none;
+  border: 2px solid;
+  border-color: deepskyblue;
+}
+
+.pref-class input::placeholder {
+  font-weight: 500;
+}
+
+.del-preff-class {
+  margin-left: 10px;
+  border-radius: 50px;
+  width: 25px;
+  height: 25px;
+  font-weight: bolder;
+  font-size: 10px;
+  color: rgb(199, 199, 199);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: dashed 2px gray;
-  transition: all 0.3s ease-in-out;
-  margin-top: 20px;
+  outline: solid 2px gray;
+  background-color: transparent;
+  transition: all 0.7s ease;
 }
 
-.file-input button:hover {
+.del-preff-class:hover {
+  color: rgb(199, 199, 199);
+  border: none;
+  outline: solid 2px deepskyblue;
   background-color: #223a73;
-  outline: dashed 2px rgb(16, 160, 218);
+}
+
+.agg-preff-class {
+  background-color: #223a73;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  border: transparent;
+  outline: solid 1px gray;
+  border-radius: 100px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.agg-preff-class:hover {
+  outline: solid 1px deepskyblue;
 }
 </style>

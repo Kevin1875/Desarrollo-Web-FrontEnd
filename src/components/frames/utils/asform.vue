@@ -57,8 +57,7 @@ const path = () =>
       <div class="Titulo">
         <H4>Busqueda Avanzada</H4>
         <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit animi
-          dicta asperiores necessitatibus eligendi beatae nostrum.
+          Aquí puede realizar una busqueda mas minuciosa y exacta
         </p>
       </div>
 
@@ -80,7 +79,7 @@ const path = () =>
 
           <div class="formComponent">
             <label for="año">Año</label>
-            <input v-model="data.año" type="number" id="año" name="año" placeholder="Ingrese su email" min="2000"
+            <input v-model="data.año" type="number" id="año" name="año" placeholder="Ingrese el año" min="2000"
               max="2100" required />
           </div>
           <div class="formComponent">

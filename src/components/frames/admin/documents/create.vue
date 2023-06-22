@@ -145,7 +145,7 @@ function handleFileSelect(event) {
       <div class="subtittle-cr">
         <h3>GESTIÓN DE PUBLICACIONES</h3>
         <div class="status">CREAR PUBLICACIÓN</div>
-        <a href="/adminpanel/publication">
+        <a href="/adminpanel/">
           <span class="material-symbols-outlined btn"> chevron_left </span>
         </a>
       </div>
