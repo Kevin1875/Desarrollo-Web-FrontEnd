@@ -53,7 +53,7 @@ const storeInputValue = () => {
 
         <div class="alm">
           <simpleSearchButton class="btn-unloged" v-slot:name-button
-            ><a href="/simplesearch">Busqueda avanzada</a></simpleSearchButton
+            ><a href="/simplesearch">Busqueda simple</a></simpleSearchButton
           >
 
           <simpleSearchButton class="btn-unloged-as" v-slot:name-button

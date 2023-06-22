@@ -96,9 +96,11 @@ export default {
   <div class="ss">
     <div class="Top">
       <form id="simpleSearch" @submit.prevent="update(palabra)">
-        <label for="palabra">Busqueda: </label>
-        <input v-model="palabra" type="text" id="palabra" name="palabra"
-          placeholder="Ingrese la palabra que desea buscar" />
+        <div style="display: flex; flex-direction: row;">
+          <label for="palabra">Busqueda: </label>
+          <input v-model="palabra" type="text" id="palabra" name="palabra" style="width: 400px; padding: 0 10px;"
+            placeholder="Ingrese la palabra que desea buscar" />
+        </div>
         <div class="botones">
           <simpleSearchButton class="wel" v-slot:name-button type="submit">Buscar</simpleSearchButton>
         </div>
