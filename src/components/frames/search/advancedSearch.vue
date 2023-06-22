@@ -45,6 +45,7 @@ export default {
       axios.get(search.dbDefault).then(function (response) {
         // handle success
         resultado.data = response.data.data;
+        console.log(resultado.data);
       }).catch(error => {
         console.error(error);
       });
@@ -102,7 +103,7 @@ export default {
 <template>
   <div class="main-as">
     <asform @busqueda="update" />
-    <div class="hide" :class="hide">
+
       <div class="main-sTable">
         <div class="top-tittle">
           <p>TOTAL DE {{ resultado.data.length }} REGISTROS ENCONTRADOS</p>
@@ -129,7 +130,6 @@ export default {
           </tr>
         </table>
       </div>
-    </div>
   </div>
 </template>
 
