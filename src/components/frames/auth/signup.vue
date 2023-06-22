@@ -224,7 +224,6 @@ function eliminarPreferencia(index) {
     justify-content: center;
     color: rgb(35, 202, 35);
 }
-
 .sucess a{
     color: white;
     border: solid 2px rgb(18, 89, 196);
