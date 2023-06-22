@@ -95,6 +95,13 @@ const router = createRouter({
       name: "Document",
       component: () => import("./components/frames/documents/document.vue"),
     },
+
+    //SIGNUP ROUTE
+    {
+      path: "/signup",
+      name: "Singup",
+      component: () => import("./components/frames/auth/signup.vue"),
+    },
   ],
 });
 

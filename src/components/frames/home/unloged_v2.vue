@@ -1,58 +1,38 @@
-<script>
+<script setup>
 import simpleSearchButton from "../../buttons/simpleSearchButton.vue";
+import carf from "../utils/carousel.vue";
 import slider from "../utils/slider.vue";
-import { ref, onMounted, reactive } from "vue";
+import recomendationSlider from "../utils/recomendSlider.vue";
+import { ref, onMounted } from "vue";
 
-export default {
-  components: {
-    slider,
-    simpleSearchButton,
-  },
-  setup() {
-    let btnSimpleClass = ref("alm");
-    let clickOnBottom = ref(false);
-    let inputValue = ref("");
+let btnSimpleClass = ref("alm");
+let clickOnBottom = ref(false);
 
-    const simpleClick = () => {
-      btnSimpleClass.value = "alm2";
-      clickOnBottom.value = true;
-    };
+const simpleClick = () => {
+  btnSimpleClass.value = "alm2";
+  clickOnBottom.value = true;
+};
 
-    const storeInputValue = () => {
-      console.log(inputValue.value);
-    };
+const isClickedOutside = ref(false);
 
-    const isClickedOutside = ref(false);
+//PASAR
+const prueba = ref("simplesearch?word=csu");
+const inputValue = ref("");
+const storedValue = ref("");
 
-    onMounted(() => {
-      const handleClickOutside = (event) => {
-        if (!clickOnBottom.value.$el.contains(event.target)) {
-          console.log("ijueputa");
-          isClickedOutside.value = true;
-        }
-      };
-
-      document.addEventListener("click", handleClickOutside);
-    });
-
-    return {
-      btnSimpleClass,
-      clickOnBottom,
-      inputValue,
-      simpleClick,
-      storeInputValue,
-    };
-  },
+const storeInputValue = () => {
+  storedValue.value = inputValue.value;
+  window.location.href = "/simplesearch?word=" + storedValue.value;
 };
 </script>
 
 <template>
   <div class="main-lg">
     <div class="tituloz">
-      <h1>
-        SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
-        RÉGIMEN LEGAL
-      </h1>
+      <H1
+        >SISTEMA DE INFORMACIÓN NORMATIVA, JURISPRUDENCIAL Y DE CONCEPTOS DE
+        RÉGIMEN LEGAL</H1
+      >
     </div>
     <div class="m1">
       <div class="messagge-main">
@@ -71,20 +51,54 @@ export default {
           reglamentos, resoluciones judiciales, entre otros.
         </p>
 
-        <div :class="btnSimpleClass">
-          <simpleSearchButton v-slot:name-button> <a href="/simplesearch">Búsqueda Simple</a> </simpleSearchButton>
+        <div class="alm">
+          <simpleSearchButton class="btn-unloged" v-slot:name-button
+            ><a href="/simplesearch">Busqueda avanzada</a></simpleSearchButton
+          >
 
-          <simpleSearchButton v-slot:name-button><a href="/advancedsearch">Búsqueda avanzada</a></simpleSearchButton>
+          <simpleSearchButton class="btn-unloged-as" v-slot:name-button
+            ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton
+          >
         </div>
       </div>
     </div>
-    <div class="noticias">
+    <div class="aaaaa">
       <slider />
     </div>
   </div>
 </template>
 
 <style scoped>
+.btn-unloged {
+  height: 250px;
+  width: 250px;
+  margin: 0 20px;
+  background-image: url("../../../assets/simplesearch.jpg");
+  background-size: cover;
+  background-position: center;
+  font-size: 20px;
+  font-weight: bolder;
+  color: white;
+}
+.btn-unloged:hover{
+  scale: 1.01 ;
+}
+
+.btn-unloged-as {
+  height: 250px;
+  width: 250px;
+  margin: 0 20px;
+  background-image: url("../../../assets/advanced_search.jpg");
+  background-size: cover;
+  background-position: center;
+  font-size: 20px;
+  font-weight: bolder;
+  color: white;
+}
+
+.btn-unloged-as:hover{
+  scale: 1.01 ;
+}
 .search_input {
   width: fit-content;
   display: flex;
@@ -108,24 +122,15 @@ export default {
   outline: none;
   border-color: #0500ff;
 }
-
 .search_input input:hover {
   outline: none;
   border-color: #0500ff;
 }
-
 .alm {
-  max-width: 340px;
+  width: fit-content;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.alm2 {
-  display: flex;
-  flex-direction: column;
-  height: 80px;
-  justify-content: space-between;
 }
 
 .main-lg {
@@ -133,20 +138,18 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-
 .tituloz {
   width: 100%;
   font-weight: bold;
 }
-
 .tituloz h1 {
   width: 100%;
   font-weight: bold;
   color: aliceblue;
 }
 
-.noticias {
-  margin-top: 160px;
+.aaaaa {
+  margin-top: 0;
   background-color: rgb(217, 217, 217, 0.15);
   padding: 30px 10px;
   height: 250px;
@@ -164,11 +167,25 @@ export default {
 }
 
 .messagge-main {
-  width: 35%;
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.recomendaciones {
+  max-width: 550px;
+  min-width: 550px;
+}
+
+.recomendaciones rec {
+  text-align: center;
+  color: brown;
 }
 
 .Desc {
   margin: 50px 0;
+  width: 400px;
 }
 
 .titulo {

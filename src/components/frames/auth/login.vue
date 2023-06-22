@@ -4,7 +4,6 @@ import axios from "axios";
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import router from '../../../router';
-import comp from './comp.vue';
 
 
 const store = useStore()
@@ -87,11 +86,8 @@ console.log(contador.value)
         <div class="buttons-div">
           <button type="submit">Entrar</button>
         </div>
-        <a href="" style="padding-left: 30px;">¿Deseas registrarte? 🤓</a>
+        <a href="/signup" style="padding-left: 30px;">¿Deseas registrarte? 🤓</a>
       </form>
-    </div>
-    <div>
-      <comp/>
     </div>
   </div>
 </template>

@@ -53,20 +53,10 @@ const storeInputValue = () => {
           reglamentos, resoluciones judiciales, entre otros.
         </p>
 
-        <div :class="btnSimpleClass">
-          <div v-if="clickOnBottom">
-            <div class="search_input">
-              <input type="text" placeholder="Ingresa tu busqueda" v-model="inputValue"/>
-              <a @click="storeInputValue"
-                ><span class="material-symbols-outlined"> search </span></a
-              >
-            </div>
-          </div>
-          <div v-else class="pre-charge">
-            <simpleSearchButton v-slot:name-button>
-              <a @click="simpleClick">Busqueda Simple</a>
-            </simpleSearchButton>
-          </div>
+        <div class="alm">
+          <simpleSearchButton v-slot:name-button
+            ><a href="/simplesearch">Busqueda simple</a></simpleSearchButton
+          >
 
           <simpleSearchButton v-slot:name-button
             ><a href="/advancedsearch">Busqueda avanzada</a></simpleSearchButton

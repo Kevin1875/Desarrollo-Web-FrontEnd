@@ -8,21 +8,28 @@ import { onMounted } from "vue";
 
 const route = useRoute();
 const router = useRouter();
-const isLoginPage = ref(null)
+const isLoginPage = ref(null);
+const isSingupPage = ref(null);
+
+const hide = ref(null);
 
 onMounted(async () => {
   await router.isReady();
   isLoginPage.value = (route.path === '/login')
+  isSingupPage.value = (route.path === '/signup')
+  hide.value = isLoginPage.value || isSingupPage.value;
+  console.log(hide.value);
+
 });
 
 </script>
 
 <template>
-  <navbar v-if="!isLoginPage"/>
+  <navbar v-if="!hide"/>
   <div class="mainContentClass">
     <mainContent />
   </div>
-  <pFooter v-if="!isLoginPage"/>
+  <pFooter v-if="!hide"/>
 </template>
 
 <style scoped>

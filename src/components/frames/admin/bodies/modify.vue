@@ -2,6 +2,8 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
+const id = "646eb634be39ca3f71662ab7";
+
 const nombre = ref(null);
 const correo = ref(null);
 const contraseña = ref(null);
@@ -9,7 +11,9 @@ const contraseña_confirmada = ref(null);
 const show_updater = ref(false);
 const show_notfoundmail = ref(false);
 const preferencias = ref([]);
-const succes_send = ref(false)
+const succes_send = ref(false);
+
+const picked = ref(false);
 
 const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);
@@ -38,8 +42,6 @@ function enviarDatos() {
     .then((response) => {
       console.log("Solicitud PATCH exitosa");
       succes_send.value = true;
-      
-
     })
     .catch((error) => {
       console.error("Error en la solicitud PATCH");
@@ -100,7 +102,8 @@ function sentDocument() {
 const idCorrespondiente = ref(null);
 const id_final = ref(null);
 const correo_pre = ref(null);
-function getUser() {
+
+function getCollegeBodies() {
   axios
     .get("http://localhost:3000/api/v1/users")
     .then((response) => {
@@ -138,6 +141,43 @@ function getUser() {
 }
 
 
+function getUser() {
+  axios
+    .get("http://localhost:3000/api/v1/users")
+    .then((response) => {
+      console.log(response.data.data);
+      for (let i = 0; i < response.data.data.length; i++) {
+        if (response.data.data[i].email === correo_pre.value) {
+          idCorrespondiente.value = response.data.data[i]._id;
+          nombre.value = response.data.data[i].name;
+          correo.value = response.data.data[i].email;
+
+          preferencias.value = response.data.data[i].preferences.map(
+            (valor) => {
+              return { valor };
+            }
+          );
+          show_notfoundmail.value = false;
+          break; // Detener la búsqueda una vez encontrado el correo
+        }
+      }
+      if (idCorrespondiente.value != null) {
+        id_final.value = idCorrespondiente.value;
+        idCorrespondiente.value = null;
+        show_updater.value = true;
+      } else {
+        show_notfoundmail.value = true;
+
+        show_updater.value = false;
+        console.log("no se encontró un usuario asociado al correo");
+      }
+    })
+    .catch((error) => {
+      // Maneja el error aquí
+      console.error(error);
+    });
+}
+
 function agregarPreferencia() {
   preferencias.value.push({ valor: "" });
 }
@@ -172,13 +212,18 @@ function eliminarPreferencia(index) {
         <form @submit.prevent="buscarUsuario">
           <div class="main-form">
             <div class="cont-1">
-              <label>Ingrese el correo del usuario a modificar: </label>
-              <input
-                type="text"
-                v-model="correo_pre"
-                placeholder="Correo"
-                class="input_title"
-              />
+              <div>
+                <div>
+                  Seleccione el cuerpo colegiado que va a modificar:
+                  {{ picked }}
+                </div>
+
+                <input type="radio" id="one" value="One" v-model="picked" />
+                <label for="one">One</label>
+
+                <input type="radio" id="two" value="Two" v-model="picked" />
+                <label for="two">Two</label>
+              </div>
               <div style="width: 100%">
                 <input type="submit" value="Buscar" class="btn-submit" />
               </div>
@@ -238,7 +283,7 @@ function eliminarPreferencia(index) {
 </template>
 
 <style scoped>
-.succesmodify{
+.succesmodify {
   background-color: rgba(50, 205, 50, 0.452);
   color: white;
   margin-top: 10px;

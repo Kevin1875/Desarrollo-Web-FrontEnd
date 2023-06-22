@@ -126,8 +126,6 @@ const recomentations = ref([
   },
 ]);
 
-console.log(recomentations.value);
-
 onMounted(() => {
   axios
     .get("http://localhost:3000/api/v1/document?year=2023")

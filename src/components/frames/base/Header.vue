@@ -2,14 +2,16 @@
 import { ref, onMounted } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import axios from 'axios'
 
 const store = useStore();
 const id = computed(() => store.state.id);
-const isAdmin = true;
+const idName = ref(null);
+const isAdmin = ref(false);
 
 const nombre = ref("Carlos");
 const mostrarMenu = ref(false);
-const text = ref(nombre.value)
+const text = ref(nombre.value);
 
 function changeText() {
   text.value = "Cerrar Sesión";
@@ -18,7 +20,41 @@ function resetText() {
   text.value = nombre.value;
 }
 
-console.log("El id es:", id.value);
+onMounted(() => {
+    //llama el nombre del usuario con el id logeado
+  axios
+    .get("http://localhost:3000/api/v1/users/"+id.value)
+    .then((response) => {
+      idName.value = response.data.data.name;
+    })
+    .catch((error) => {
+      // Manejo de errores en caso de que la solicitud falle
+      console.error(error);
+    });
+
+
+  //verifica si es admin para mostrar el boton admin
+  axios
+    .get("http://localhost:3000/api/v1/collegiateBodies")
+    .then((response) => {
+      // Lógica para manejar la respuesta de la API
+      const resultados = response.data.data
+      for (let admin in resultados){
+        const lista_admins = resultados[admin].admins;
+        for (let i = 0; i <lista_admins.length; i++){
+          if (id.value === lista_admins[i]._id){
+            isAdmin.value = true;
+            break;
+          }
+        }
+      }
+      
+    })
+    .catch((error) => {
+      // Manejo de errores en caso de que la solicitud falle
+      console.error(error);
+    });
+});
 
 let varLogin = ref("Login");
 let isScroll = ref(true);
@@ -55,7 +91,6 @@ window.addEventListener("scroll", function () {
         </li>
         <li v-if="isAdmin" class="li"><a href="/adminpanel">Administrar</a></li>
         <li v-if="id != null" class="li"><a href="/adminpanel">Ajustes</a></li>
-        <li class="li"><a href="https://unal.edu.co/">Ayuda</a></li>
       </ul>
     </nav>
     <!--
@@ -68,7 +103,7 @@ window.addEventListener("scroll", function () {
       @mouseover="changeText"
       @mouseleave="resetText"
     >
-      {{text}}
+      {{ idName }}
     </div>
     <!--
       <span class="material-symbols-outlined" style="margin-right: 10px">
