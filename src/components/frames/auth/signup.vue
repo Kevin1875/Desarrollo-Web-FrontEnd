@@ -9,7 +9,7 @@ const contraseña_confirmada = ref(null);
 const preferencias = ref([{ valor: "" }, { valor: "" }, { valor: "" }]);
 const pref = ref([]);
 let pref2 = [];
-const succes =  ref(true);
+const succes =  ref(null);
 
 const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);

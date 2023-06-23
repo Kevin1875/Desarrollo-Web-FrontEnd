@@ -1,9 +1,12 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
+import { useStore } from "vuex";
+import { fill } from "pdf-lib";
 
-const id = "646eb634be39ca3f71662ab7";
-
+const store = useStore();
+const id = computed(() => store.state.id);
+const name_authorities = ref([]);
 const nombre = ref(null);
 const correo = ref(null);
 const contraseña = ref(null);
@@ -12,12 +15,14 @@ const show_updater = ref(false);
 const show_notfoundmail = ref(false);
 const preferencias = ref([]);
 const succes_send = ref(false);
+const full = ref([{}]);
 
-const picked = ref(false);
+const picked = ref();
 
 const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);
-const authorities = ref([]);
+
+const id_authorities = ref([]);
 const documentType = ref(null);
 
 const pub_date = ref(null);
@@ -30,15 +35,45 @@ const entry_date_formated = ref(null);
 
 const fileInput = ref(null);
 
+const prueba = ref();
+const lista_final_ids = ref([]);
 //FUNCIONES
 
-function enviarDatos() {
-  const preferences = preferencias.value.map(({ valor }) => valor);
-  const url = "http://localhost:3000/api/v1/users/" + id_final.value;
-  console.log(preferences);
+onMounted(() => {
+  //verifica si es admin para mostrar el boton admin
+  axios
+    .get("http://localhost:3000/api/v1/collegiateBodies")
+    .then((response) => {
+      // Lógica para manejar la respuesta de la API
+      const resultados = response.data.data;
+      for (let admin in resultados) {
+        const lista_admins = resultados[admin].admins;
+        for (let i = 0; i < lista_admins.length; i++) {
+          if (id.value === lista_admins[i]._id) {
+            id_authorities.value.push(resultados[admin]._id);
+            enviarNombre(resultados[admin]._id);
+          }
+        }
+      }
+      full.value.shift();
+    })
+    .catch((error) => {
+      // Manejo de errores en caso de que la solicitud falle
+      console.error(error);
+    });
+});
+
+async function enviarDatos() {
+  for (let i = 0; i < preferencias.value.length; i++) {
+    await llamarID(preferencias.value[i].valor);
+  }
+  console.log(lista_final_ids.value);
+  const finales = Array.from(lista_final_ids.value);
+  const url = "http://localhost:3000/api/v1/collegiateBodies/" + picked.value;
+  console.log(finales);
 
   axios
-    .patch(url, { preferences: preferences })
+    .patch(url, { admins: finales })
     .then((response) => {
       console.log("Solicitud PATCH exitosa");
       succes_send.value = true;
@@ -49,11 +84,40 @@ function enviarDatos() {
     });
 }
 
+async function llamarID(correo) {
+  const url = "http://localhost:3000/api/v1/users?email="+correo;
+  await axios
+    .get(url)
+    .then((response) => {
+      const resultados = response.data.data;
+      lista_final_ids.value.push(resultados[0]._id);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function enviarNombre(id) {
+  const url = "http://localhost:3000/api/v1/collegiateBodies/" + id;
+  axios
+    .get(url)
+    .then((response) => {
+      //name_authorities.value.push(response.data.data.name);
+      full.value.push({
+        id: id,
+        name: response.data.data.name,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 function handleFileChange(event) {
   document.value = event.target.files[0];
 }
 
-function buscarUsuario() {
+function buscarCuerpo() {
   getUser();
 }
 
@@ -139,13 +203,24 @@ function getCollegeBodies() {
       console.error(error);
     });
 }
-
+const buscado = ref(null);
 
 function getUser() {
   axios
-    .get("http://localhost:3000/api/v1/users")
+    .get("http://localhost:3000/api/v1/collegiateBodies/" + picked.value)
     .then((response) => {
-      console.log(response.data.data);
+      buscado.value = true;
+      const admins = response.data.data.admins;
+      console.log(admins.length);
+
+      for (let i = 0; i < admins.length; i++) {
+        preferencias.value.push({
+          valor: admins[i].email,
+          id: admins[i]._id,
+        });
+      }
+
+      /*
       for (let i = 0; i < response.data.data.length; i++) {
         if (response.data.data[i].email === correo_pre.value) {
           idCorrespondiente.value = response.data.data[i]._id;
@@ -171,6 +246,7 @@ function getUser() {
         show_updater.value = false;
         console.log("no se encontró un usuario asociado al correo");
       }
+      */
     })
     .catch((error) => {
       // Maneja el error aquí
@@ -209,20 +285,21 @@ function eliminarPreferencia(index) {
           </div>
         </Transition>
 
-        <form @submit.prevent="buscarUsuario">
+        <form @submit.prevent="buscarCuerpo">
           <div class="main-form">
             <div class="cont-1">
               <div>
-                <div>
-                  Seleccione el cuerpo colegiado que va a modificar:
-                  {{ picked }}
+                <div>Seleccione el cuerpo colegiado que va a modificar:</div>
+                Picked: {{ picked }}
+                <div v-for="cuerpo in full">
+                  <input
+                    type="radio"
+                    :id="cuerpo.id"
+                    :value="cuerpo.id"
+                    v-model="picked"
+                  />
+                  <label :for="cuerpo.id">{{ cuerpo.name }}</label>
                 </div>
-
-                <input type="radio" id="one" value="One" v-model="picked" />
-                <label for="one">One</label>
-
-                <input type="radio" id="two" value="Two" v-model="picked" />
-                <label for="two">Two</label>
               </div>
               <div style="width: 100%">
                 <input type="submit" value="Buscar" class="btn-submit" />
@@ -232,7 +309,7 @@ function eliminarPreferencia(index) {
         </form>
       </div>
 
-      <div v-if="show_updater">
+      <div v-if="buscado">
         <form @submit.prevent="enviarDatos">
           <div class="main-form">
             <div class="cont-1">
@@ -242,7 +319,7 @@ function eliminarPreferencia(index) {
                 Nombre: {{ nombre }}
               </div>
               <div style="margin-bottom: 20px">
-                <label>Preferencias:</label>
+                <label>Administradores del cuerpo colegiado:</label>
                 <div
                   v-for="(preferencia, index) in preferencias"
                   :key="index"

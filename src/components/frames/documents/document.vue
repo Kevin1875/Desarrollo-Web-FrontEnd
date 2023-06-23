@@ -1,41 +1,3 @@
-<template>
-  <div v-if="documento" class="main-doc">
-    <div class="head">
-      <h1 style="margin-bottom: 20px">{{ documento.title }}</h1>
-      <div
-        style="
-          display: flex;
-          flex-direction: row;
-          margin-top: -15px;
-          margin-bottom: 20px;
-        "
-      >
-        <h7 style="">{{ documento.type }} de&nbsp; </h7>
-        <h7>{{ authorities }}</h7>
-      </div>
-      <p>Fecha de expedición: {{ expeditionDate }}</p>
-      <p>Fecha de entrada en vigencia: {{ entryIntoForce }}</p>
-      <div class="guardado" @click="guardarDocumento">
-        <span class="material-symbols-outlined"> save </span>
-        <p v-if="is_saved" style="margin-left: 10px"> Documento Guardado</p>
-        <p v-else style="margin-left: 10px">Guardar Documento</p>
-      </div>
-    </div>
-    <div v-if="pdfFile" class="document">
-      <embed
-        :src="pdfFile"
-        type="application/pdf"
-        width="80%"
-        height="1000px"
-        name="Documento"
-      />
-    </div>
-  </div>
-  <div v-else class="pre-charge">
-    <h6>Cargando datos...</h6>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
@@ -189,6 +151,45 @@ async function callAuthorities(list) {
   }
 }
 </script>
+<template>
+  <div v-if="documento" class="main-doc">
+    <div class="head">
+      <h1 style="margin-bottom: 20px">{{ documento.title }}</h1>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          margin-top: -15px;
+          margin-bottom: 20px;
+        "
+      >
+        <h7 style="">{{ documento.type }} de&nbsp; </h7>
+        <h7>{{ authorities }}</h7>
+      </div>
+      <p>Fecha de expedición: {{ expeditionDate }}</p>
+      <p>Fecha de entrada en vigencia: {{ entryIntoForce }}</p>
+      <div class="guardado" @click="guardarDocumento" v-if=" !(id_user === null)">
+        <span class="material-symbols-outlined"> save </span>
+        <p v-if="is_saved" style="margin-left: 10px"> Documento Guardado</p>
+        <p v-else style="margin-left: 10px">Guardar Documento</p>
+      </div>
+    </div>
+    <div v-if="pdfFile" class="document">
+      <embed
+        :src="pdfFile"
+        type="application/pdf"
+        width="80%"
+        height="1000px"
+        name="Documento"
+      />
+    </div>
+  </div>
+  <div v-else class="pre-charge">
+    <h6>Cargando datos...</h6>
+  </div>
+</template>
+
+
 
 <style scoped>
 .guardado {

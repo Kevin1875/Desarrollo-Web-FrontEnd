@@ -66,11 +66,11 @@ const path = () =>
           <div class="formComponent">
             <label for="nombre">Palabra clave</label>
             <input v-model="data.palabra" type="text" id="nombre" name="nombre"
-              placeholder="Ingrese la palabra que desea buscar" required />
+              placeholder="Ingrese la palabra que desea buscar" />
           </div>
           <div class="formComponent">
             <label for="tipoDocumento">Tipo de Documento:</label>
-            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="data.tipo" required>
+            <select class="sle" id="tipoDocumento" name="tipoDocumento" v-model="data.tipo" >
               <option v-for="option in tipoDocumentos" :value="option.value">
                 {{ option.label }}
               </option>
@@ -80,11 +80,11 @@ const path = () =>
           <div class="formComponent">
             <label for="año">Año</label>
             <input v-model="data.año" type="number" id="año" name="año" placeholder="Ingrese el año" min="2000"
-              max="2100" required />
+              max="2100"  />
           </div>
           <div class="formComponent">
             <label for="cuerpoCol">Cuerpo Colegiado:</label>
-            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="data.cuerpoCol" required>
+            <select class="sle" id="cuerpoCol" name="cuerpoCol" v-model="data.cuerpoCol">
               <option v-for="option in cuerposColegiados.data" :value="option._id">
                 {{ option.name }}
               </option>

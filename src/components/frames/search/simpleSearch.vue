@@ -43,7 +43,7 @@ export default {
     watch(
       () => search.dbDefault,
       (newValue) => {
-        axios.get(newValue).then(function (response) {
+        axios.get("http://localhost:3000/api/v1/document?word=csu").then(function (response) {
           // handle success
           resultado.data = response.data.data;
         });

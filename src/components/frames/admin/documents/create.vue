@@ -7,6 +7,7 @@ const selectedFileName = ref("Selecciona el documento");
 const title = ref(null);
 const authorities = ref([]);
 const documentType = ref(null);
+const subido = ref(null);
 
 const pub_date = ref(null);
 const exp_date = ref(null);
@@ -90,10 +91,12 @@ function formatDate(value) {
   const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Obtener mes y asegurar dos dígitos
   const year = date.getFullYear().toString(); // Obtener año
 
-  return `${day}/${month}/${year}`;
+  return `${month}/${day}/${year}`;
 }
 
 function sentDocument() {
+  console.log(pub_date_formated.value);
+
   const formData = new FormData();
   formData.append("Doc", document.value);
   formData.append("title", title.value);
@@ -110,14 +113,20 @@ function sentDocument() {
       },
     })
     .then((response) => {
-      console.log("Melo");
-
       console.log(response.data);
+      if (response.data.error === false) {
+        subido.value = true;
+      } else {
+        subido.value = false;
+      }
+      console.log(response.data.error);
       // Realiza las acciones necesarias con la respuesta del servidor
     })
     .catch((error) => {
       console.log("Melont");
-      console.error(error);
+      subido.value = false;
+
+      //console.error(error);
       // Maneja el error en caso de que la solicitud falle
     });
 }
@@ -151,7 +160,7 @@ function handleFileSelect(event) {
       </div>
     </div>
 
-    <div style="margin-top: 50px;">
+    <div style="margin-top: 50px" v-if="subido != true">
       <form @submit.prevent="submitForm">
         <div class="main-form">
           <div class="cont-1">
@@ -248,11 +257,50 @@ function handleFileSelect(event) {
           </div>
         </div>
       </form>
+      <div v-if="subido === false" class="error">
+        <h5>Error al publicar el documento, revisa la información ingresada</h5>
+      </div>
+    </div>
+    <div v-if="subido === true" class="success">
+      <h2>El documento ha sido subido! 😎</h2>
     </div>
   </div>
 </template>
 
 <style scoped>
+.success {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.success h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff1e;
+  height: 100px;
+  width: 600px;
+  border-radius: 20px;
+  border: 2px solid rgba(172, 255, 47, 0.452);
+  text-align: center;
+  margin: 0;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.error h5 {
+  padding: 10px;
+  margin: 0;
+  background-color: #223a73;
+  border-radius: 10px;
+  color: rgb(214, 96, 96);
+}
 .btn-submit {
   width: 100%;
   height: 50px;

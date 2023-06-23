@@ -3,6 +3,8 @@ import sTable from "../../tables/sTable.vue";
 import axios from "axios";
 import asform from "../utils/asform.vue";
 import { reactive, watch, onMounted } from "vue";
+import { ref } from "vue";
+
 
 export default {
   components: {
@@ -10,6 +12,7 @@ export default {
     asform,
   },
   setup() {
+    const ocu =ref(true);
     const search = reactive({
       dbDefault: "http://localhost:3000/api/v1/document?year=2023",
     });
@@ -32,8 +35,9 @@ export default {
       () => search.dbDefault,
       (newValue) => {
         console.log(newValue);
-        axios.get(newValue).then(function (response) {
+        axios.get("http://localhost:3000/api/v1/document?year=2023&type=Circular").then(function (response) {
           // handle success
+          ocu.value = false;
           resultado.data = response.data.data;
         }).catch(error => {
           console.error(error);
@@ -95,6 +99,7 @@ export default {
       update,
       findCollegiateBody,
       resultado,
+      ocu,
     };
   },
 };
@@ -103,8 +108,8 @@ export default {
 <template>
   <div class="main-as">
     <asform @busqueda="update" />
-
-      <div class="main-sTable">
+      <div class="main-sTable" v-if="!ocu">
+        
         <div class="top-tittle">
           <p>TOTAL DE {{ resultado.data.length }} REGISTROS ENCONTRADOS</p>
         </div>
@@ -171,7 +176,7 @@ export default {
 
 .main-sTable {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
   width: 100%;
   margin-left: auto;
