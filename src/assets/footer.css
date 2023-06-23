@@ -1,0 +1,61 @@
+footer {
+    background: #666;
+    bottom: 0;
+    clear: both;
+    color: #DDD;
+    font-size: .9em;
+    height: auto;
+    margin: 0!important;
+    position: relative;
+    
+}
+
+footer .row {
+    margin: 0 25px;
+}
+
+footer .gobiernoLinea {
+    margin: 20px 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+footer a {
+    color: #FFF!important;
+    text-decoration: none;
+}
+
+footer .footer-info {
+    border-left: 1px solid #4b4b4b!important;
+    border-right: 1px solid #4b4b4b!important;
+    margin: 20px 0!important;
+    padding: 0!important;
+}
+
+footer .logos {
+    margin: 20px 0;
+    text-align: center;
+}
+
+footer .btn-group {
+    margin: 0;
+    width: 49%;
+}
+
+footer .footer-info .csc-frame-indent:first-child p {
+    margin-left: 10%;
+    margin-right: 0;
+}
+
+footer .footer-info .csc-frame-indent {
+    float: left;
+    text-align: right;
+    width: 48%;
+}
+
+footer .footer-info .csc-frame-indent p {
+    line-height: 20px;
+    margin-bottom: 0;
+    margin-right: 10%;
+    font-size: 13.38px;
+}

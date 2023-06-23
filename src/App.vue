@@ -1,47 +1,40 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import navbar from "./components/frames/base/Header.vue";
+import pFooter from "./components/frames/base/Footer.vue";
+import mainContent from "./components/frames/base/mainContent.vue";
+import { useRoute, useRouter } from 'vue-router'
+import { ref, watchEffect } from "vue";
+import { onMounted } from "vue";
+
+const route = useRoute();
+const router = useRouter();
+const isLoginPage = ref(null);
+const isSingupPage = ref(null);
+
+const hide = ref(null);
+
+onMounted(async () => {
+  await router.isReady();
+  isLoginPage.value = (route.path === '/login')
+  isSingupPage.value = (route.path === '/signup')
+  hide.value = isLoginPage.value || isSingupPage.value;
+  console.log(hide.value);
+
+});
+
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <navbar v-if="!hide"/>
+  <div class="mainContentClass">
+    <mainContent />
+  </div>
+  <pFooter v-if="!hide"/>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.mainContentClass {
+  display: flex;
+  justify-content: center;
 }
 </style>

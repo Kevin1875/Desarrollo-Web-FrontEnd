@@ -1,10 +1,13 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  --backgroundcolor: linear-gradient(to bottom right,#031448, #031448);
+
   --vt-c-white: #ffffff;
   --vt-c-white-soft: #f8f8f8;
   --vt-c-white-mute: #f2f2f2;
 
   --vt-c-black: #181818;
+  --background-color-dark: linear-gradient(to bottom right,#031448, #00308E);
   --vt-c-black-soft: #222222;
   --vt-c-black-mute: #282828;
 
@@ -38,7 +41,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-black);
+    --color-background: var(--background-color-dark);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
 
@@ -56,7 +59,6 @@
   box-sizing: border-box;
   margin: 0;
   position: relative;
-  font-weight: normal;
 }
 
 body {
