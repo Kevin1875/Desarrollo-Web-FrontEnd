@@ -11,3 +11,5 @@ createApp(App)
   .use(router)
   .use(store)
   .mount("#app");
+
+####RECUERDA CERRAR TU GITHUB, Y PYTHON >>>> 
